@@ -45,11 +45,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         //if getCurrentUser does not returns null
         if(firebaseAuth.getCurrentUser() != null){
-            //that means user is already logged in
-            //so close this activity
             finish();
-
-            //and open profile activity
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
         }
 
@@ -88,9 +84,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        //if the email and password are not empty
-        //displaying a progress dialog
-
         progressDialog.setMessage("Registering Please Wait...");
         progressDialog.show();
 
@@ -104,7 +97,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             finish();
                             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         }else{
-                            //display some message here
                             Toast.makeText(SignupActivity.this,"Error: Passwords must be" +
                                     " at least 6 characters",Toast.LENGTH_LONG).show();
                         }
@@ -122,7 +114,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         if(view == textViewSignin){
-            //open login activity when user taps on the already registered textview
             startActivity(new Intent(this, MainActivity.class));
         }
 
