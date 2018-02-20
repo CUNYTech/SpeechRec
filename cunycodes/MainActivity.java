@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             finish();
                             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         }else{
-                            //display some message here
                             Toast.makeText(MainActivity.this,"Login error. Please re-enter" +
                                     " your informatiom ",Toast.LENGTH_LONG).show();
                         }
