@@ -22,6 +22,9 @@ WORKFLOW:
 	git checkout [branch name]
 		To be at the right branch that you want to modify your files into. Tag on a '-b' option to create a new branch and then move to it.
 
+   	git pull origin [current branch name]
+		Updates your branch as well.
+
 	git add [your files]
 		To make your files ready to be push to github (to stages the file, it will make the file from red to green when you type 'git status').
 		These changes are made in the branch you are on.
