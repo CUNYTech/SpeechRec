@@ -35,11 +35,11 @@ WORKFLOW:
 	git commit -m "Your messages/comments for this commit"
 		This will record the changes on your local repository(your laptop for example).
 		Records the change on the branch you are on.
-	
-	git push [alias] [branch name]
-                alias is what repository you want to upload to on github, it will be 'origin', origin is the default alias to the SpeechRec repository on github, this is from when we clone the repository into our local computer
-                branch name is the branch that you want to upload to github. 
-		This will record the changes and update files in a remote repository(github's server).
+//I have to ask about this part...
+#	git push [alias] [branch name]
+#                alias is what repository you want to upload to on github, it will be 'origin', origin is the default alias to the SpeechRec repository on github, this is from when we clone the repository into our local computer
+#                branch name is the branch that you want to upload to github. 
+#		This will record the changes and update files in a remote repository(github's server).
 
 
 
