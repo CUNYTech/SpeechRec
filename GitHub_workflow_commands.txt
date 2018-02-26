@@ -9,20 +9,29 @@ USEFUL COMMAND:
 
 
 WORKFLOW:
+	git checkout master
+		Moves you to the Master branch.
+
+	git pull origin master
+		Make sure you are on the master branch when you do this command.
+		This updates your local machine with the newer files in the repository on github.
+
 	git branch
 		To know what branch you want to be on.
 
 	git checkout [branch name]
-		To be at the right branch that you want to push your files into. Tag on a '-b' option to create a new branch and then move to it.
+		To be at the right branch that you want to modify your files into. Tag on a '-b' option to create a new branch and then move to it.
 
 	git add [your files]
 		To make your files ready to be push to github (to stages the file, it will make the file from red to green when you type 'git status').
+		These changes are made in the branch you are on.
 
 	git status
 		To see what files are ready and what are not.
 
 	git commit -m "Your messages/comments for this commit"
 		This will record the changes on your local repository(your laptop for example).
+		Records the change on the branch you are on.
 	
 	git push [alias] [branch name]
                 alias is what repository you want to upload to on github, it will be 'origin', origin is the default alias to the SpeechRec repository on github, this is from when we clone the repository into our local computer
@@ -39,4 +48,8 @@ ONCE YOU ARE SURE THAT YOUR CODE WORKS 100%, TIME TO MERGE TO THE Master Branch:
 
 	git merge --no-ff [name of the branch you want to merge with master]
 		Must add --no-ff option to the command, Robert said something about it being just moving some pointers around and not really what we want.
+
+ 	git push origin master
+		Origin is the alias to our SpeechRec repository on github
+		Master is the branch on your laptop that you want to push into Origin(SpeechRec)'s master branch
 
