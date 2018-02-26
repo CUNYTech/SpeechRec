@@ -1,0 +1,42 @@
+USEFUL COMMAND:
+	git branch
+		To tells you a list of branches, the one with '*' is the one you are on.
+
+	git status 
+		To see changes made, red = not in stage, green = in staging. Red means it's not ready to be added(upload/push) to github, green means it's ready to be added(upload/push). to github.
+	git log --graph --decorate -- oneline --all
+		To see a log of your history.
+
+
+WORKFLOW:
+	git branch
+		To know what branch you want to be on.
+
+	git checkout [branch name]
+		To be at the right branch that you want to push your files into. Tag on a '-b' option to create a new branch and then move to it.
+
+	git add [your files]
+		To make your files ready to be push to github (to stages the file, it will make the file from red to green when you type 'git status').
+
+	git status
+		To see what files are ready and what are not.
+
+	git commit -m "Your messages/comments for this commit"
+		This will record the changes on your local repository(your laptop for example).
+	
+	git push [alias] [branch name]
+                alias is what repository you want to upload to on github, it will be 'origin', origin is the default alias to the SpeechRec repository on github, this is from when we clone the repository into our local computer
+                branch name is the branch that you want to upload to github. 
+		This will record the changes and update files in a remote repository(github's server).
+
+
+
+ONCE YOU ARE SURE THAT YOUR CODE WORKS 100%, TIME TO MERGE TO THE Master Branch:
+	git branch
+
+	git checkout master
+		Moves to the branch you will be uploading/pushing into.
+
+	git merge --no-ff [name of the branch you want to merge with master]
+		Must add --no-ff option to the command, Robert said something about it being just moving some pointers around and not really what we want.
+
