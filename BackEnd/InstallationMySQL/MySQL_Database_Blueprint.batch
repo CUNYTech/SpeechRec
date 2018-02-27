@@ -1,0 +1,17 @@
+CREATE DATABASE SpeechRec;
+USE SpeechRec;
+CREATE TABLE User_Account ( 	
+  			   User_Account_ID VARCHAR(20) UNIQUE,
+			   User_Name  	   VARCHAR(20) UNIQUE,
+			   Password	   VARCHAR(20) UNIQUE,
+
+			   CONSTRAINT pk_user_account PRIMARY KEY (User_Account_ID)
+ 			  );
+
+CREATE TABLE Messages ( 
+		       Messages_ID	VARCHAR(20) UNIQUE,
+		       Text		VARCHAR(30),
+		       Summarized_text	VARCHAR(30),
+
+		       CONSTRAINT pk_messages PRIMARY KEY (Messages_ID)
+		      );
