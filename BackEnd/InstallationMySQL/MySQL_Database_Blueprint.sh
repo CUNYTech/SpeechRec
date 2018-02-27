@@ -1,6 +1,6 @@
 #!/bin/bash
 
-script_dir="/home/yizongk/CunyCODES/Installing_Configure_MySQL"
+script_dir="./Installing_Configure_MySQL"
 mysql_user="root"
 mysql_pass="3382400"
 

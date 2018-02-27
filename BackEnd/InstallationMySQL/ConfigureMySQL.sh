@@ -6,8 +6,8 @@ echo "Configuring MySQL bash script initiated..."
 echo "======================================================================"
 echo ""
 
-source_dir="/home/yizongk/CunyCODES"
-data_dir="/home/yizongk/CunyCODES/mysql"
+source_dir="./"
+data_dir="./mysql"
 
 #echo "----------------------------------------------------------------------"
 #echo "COMMAND: 'mysqld --initialize'"
