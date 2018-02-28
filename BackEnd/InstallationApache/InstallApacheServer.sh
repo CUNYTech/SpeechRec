@@ -27,6 +27,10 @@ echo "COMMAND: 'sudo ufw status'"
 echo "----------------------------------------------------------------------"
 sudo ufw status
 echo "----------------------------------------------------------------------"
+echo "COMMAND: 'sudo systemctl restart apache2'"
+echo "----------------------------------------------------------------------"
+sudo systemctl restart apache2
+echo "----------------------------------------------------------------------"
 echo "COMMAND: 'sudo systemctl status apache2'"
 echo "----------------------------------------------------------------------"
 sudo systemctl status apache2
