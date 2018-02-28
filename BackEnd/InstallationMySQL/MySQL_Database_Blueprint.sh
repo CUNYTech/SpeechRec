@@ -1,8 +1,8 @@
 #!/bin/bash
 
-script_dir="./Installing_Configure_MySQL"
+script_dir="./InstallationMySQL"
 mysql_user="root"
-mysql_pass="3382400"
+mysql_pass="SpeechRec"
 
 echo ""
 echo "======================================================================"
