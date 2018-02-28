@@ -15,13 +15,14 @@ echo "COMMAND: 'sudo apt-get -y install apache2'"
 echo "----------------------------------------------------------------------"
 sudo apt-get -y install apache2
 echo "----------------------------------------------------------------------"
+echo "COMMAND: 'sudo ufw enable'"
+echo "----------------------------------------------------------------------"
+sudo ufw enable
+echo "----------------------------------------------------------------------"
 echo "COMMAND: 'sudo ufw allow in 'Apache Full'' Only allow incoming traffic, not outgoing."
 echo "----------------------------------------------------------------------"
 sudo ufw allow in 'Apache Full'
 echo "----------------------------------------------------------------------"
-echo "COMMAND: 'sudo ufw enable'"
-echo "----------------------------------------------------------------------"
-sudo ufw enable
 echo "COMMAND: 'sudo ufw status'"
 echo "----------------------------------------------------------------------"
 sudo ufw status
