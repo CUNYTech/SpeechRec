@@ -6,14 +6,6 @@ echo "Testing PHP bash script initiated..."
 echo "======================================================================"
 echo ""
 
-#echo "----------------------------------------------------------------------"
-#echo "COMMAND: 'sudo vim /var/www/html/info.php'"
-#echo "----------------------------------------------------------------------"
-#sudo vim /var/www/html/info.php
-#Put the following into info.php then save and quit vim.
-#<?php
-#phpinfo();
-#?>
 echo "----------------------------------------------------------------------"
 echo "Creating /var/www/html/info.php"
 echo "----------------------------------------------------------------------"
