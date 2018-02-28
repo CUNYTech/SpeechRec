@@ -19,6 +19,9 @@ echo "COMMAND: 'sudo ufw allow in 'Apache Full'' Only allow incoming traffic, no
 echo "----------------------------------------------------------------------"
 sudo ufw allow in 'Apache Full'
 echo "----------------------------------------------------------------------"
+echo "COMMAND: 'sudo ufw enable'"
+echo "----------------------------------------------------------------------"
+sudo ufw enable
 echo "COMMAND: 'sudo ufw status'"
 echo "----------------------------------------------------------------------"
 sudo ufw status
