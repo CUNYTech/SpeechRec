@@ -5,13 +5,36 @@ CREATE TABLE User_Account (
 			   User_Name  	   VARCHAR(20) UNIQUE,
 			   Password	   VARCHAR(20) UNIQUE,
 
-			   CONSTRAINT pk_user_account PRIMARY KEY (User_Account_ID)
+			   CONSTRAINT UC_User_Account UNIQUE (User_Account_ID,User_Name,Password),
+                           PRIMARY KEY (User_Account_ID)
  			  );
 
 CREATE TABLE Messages ( 
-		       Messages_ID	VARCHAR(20) UNIQUE,
-		       Text		VARCHAR(30),
-		       Summarized_text	VARCHAR(30),
+		       Message_ID      		varchar(20) NOT NULL,
+       		       Audio_Path             	varchar(100),
+       	   	       Text_Path            	varchar(100), 
+       		       Summarized_Text_Path  	varchar(100), 
+       		       UNIQUE (Message_ID), 
+       		       PRIMARY KEY (Message_ID)
 
-		       CONSTRAINT pk_messages PRIMARY KEY (Messages_ID)
 		      );
+
+CREATE TABLE User ( 
+                   User_ID          varchar(20) NOT NULL,
+                   First_Name       varchar(20),
+                   Last_Name        varchar(20), 
+                   Phone_Number     varchar(20),
+                   Email            varchar(20),
+                   User_Account_ID  varchar(20),
+                   Message_ID      varchar(20),
+                   UNIQUE (User_ID), 
+                   PRIMARY KEY (User_ID)
+    		  );
+
+ALTER TABLE User
+ADD FOREIGN KEY (User_Account_ID) REFERENCES User_Account(User_Account_ID);
+
+ALTER TABLE User
+ADD FOREIGN KEY (Message_ID) REFERENCES Messages(Message_ID);
+
+
