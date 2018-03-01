@@ -32,7 +32,7 @@ echo ""
 
 echo "Installing Transcription Program..."
 echo "**********************************************"
-sudo bash $transcription_dir/InstallingSphinx.sh
+sudo bash $transcription_dir/InstallSphinx.sh
 echo "Installing Transcription Program done."
 echo ""
 echo ""
