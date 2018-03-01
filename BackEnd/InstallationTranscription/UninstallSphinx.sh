@@ -2,13 +2,13 @@
 echo "Uninstalling Sphinx..."
 
 cd sphinxbase
-sudo make uninstall
+yes | sudo make uninstall
 cd ..
 cd pocketsphinx
-sudo make uninstall
+yes | sudo make uninstall
 cd ..
 
-sudo rm -r sphinxbase
-sudo rm -r pocketsphinx
+yes | sudo rm -r sphinxbase
+yes | sudo rm -r pocketsphinx
 
 echo "Done!"
