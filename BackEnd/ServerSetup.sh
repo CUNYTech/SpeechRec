@@ -43,7 +43,7 @@ echo ""
 echo "Installing Transcription Program..."
 echo "**********************************************"
 cd $programs_dir
-sudo bash $transcription_dir/InstallSphinx.sh
+sudo bash ../$transcription_dir/InstallSphinx.sh
 cd ..
 echo "Installing Transcription Program done."
 echo ""
@@ -52,7 +52,7 @@ echo ""
 echo "Installing Summary Program..."
 echo "**********************************************"
 cd $programs_dir
-#sudo bash $summary_dir/
+#sudo bash ../$summary_dir/
 cd ..
 echo "Installing Summary Program done. NONE AS OF YET"
 echo ""
