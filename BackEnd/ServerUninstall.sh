@@ -34,14 +34,18 @@ echo ""
 
 echo "Unstalling Transcription Program..."
 echo "**********************************************"
+cd $programs_dir
 sudo bash $transcription_dir/UninstallSphinx.sh
+cd ..
 echo "Uninstalling Transcription Program done."
 echo ""
 echo ""
 
 echo "Unstalling Summary Program..."
 echo "**********************************************"
+cd $programs_dir
 #sudo bash $summary_dir/
+cd ..
 echo "Uninstalling Summary Program done. NONE AS OF YET"
 echo ""
 echo ""
