@@ -11,6 +11,11 @@ data_dir="./data_dir"
 working_space_dir="./working_space"
 php_scripts_dir="./PHP_scripts"
 
+mkdir $data_dir
+mkdir $php_scripts_dir
+mkdir $working_space_dir
+mkdir $programs_dir
+
 echo "Installing MySQL..."
 echo "**********************************************"
 sudo bash $mysql_dir/InstallMySQL.sh
