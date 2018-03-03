@@ -6,6 +6,11 @@ php_dir="./InstallationPHP"
 transcription_dir="./InstallationTranscription"
 summary_dir="./InstallationSummary"
 
+programs_dir="./API"
+data_dir="./data_dir"
+working_space_dir="./working_space"
+php_scripts_dir="./PHP_scripts"
+
 echo "Uninstalling PHP..."
 echo "**********************************************"
 sudo bash $php_dir/RemovingPHP.sh
@@ -40,6 +45,10 @@ echo "**********************************************"
 echo "Uninstalling Summary Program done. NONE AS OF YET"
 echo ""
 echo ""
+
+sudo rm -r $programs_dir
+sudo rm -r $working_space_dir
+sudo rm -r $php_scripts_dir
 
 sudo apt-get -y clean
 sudo apt-get -y autoclean
