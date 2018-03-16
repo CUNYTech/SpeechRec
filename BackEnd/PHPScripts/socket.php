@@ -10,8 +10,8 @@
   ob_implicit_flush();
   
   //$address = "146.95.216.82";  // Your public IP.
-  //$address = "ec2-18-219-242-118.us-east-2.compute.amazonaws.com";
-  $address = "18.219.242.118";
+  $address = "ec2-18-219-242-118.us-east-2.compute.amazonaws.com";
+  //$address = "18.219.242.118";
   $port = 42131;
 
   if( ( $sock = socket_create( AF_INET, SOCK_STREAM, SOL_TCP ) ) === false ) 
