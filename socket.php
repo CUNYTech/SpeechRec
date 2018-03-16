@@ -9,22 +9,24 @@
    * as it comes in. */
   ob_implicit_flush();
   
-  $address = "ec2-18-219-242-118.us-east-2.compute.amazonaws.com";  // Your public IP.
+  //$address = "146.95.216.82";  // Your public IP.
+  $address = "ec2-18-219-242-118.us-east-2.compute.amazonaws.com";
   $port = 42131;
 
-  if( ( $sock = socket_create( AF_INET, SOCK_STREAM, SOL_TCP ) ) === false ) {
+  if( ( $sock = socket_create( AF_INET, SOCK_STREAM, SOL_TCP ) ) === false ) 
     echo "socket_create() failed. Reason:" . socket_strerror( socket_last_error() ) . "\n";
-  }
+  else 
+    echo "Socket created.\n";
 
-  if( socket_bind( $sock, $address, $port ) === false ) {
+  if( socket_bind( $sock, $address, $port ) === false ) 
     echo "socket_bind() failed. Reason: " . socket_strerror( socket_last_error( $sock ) ) . "\n";
-  }
+  else
+    echo "Socket binded..\n";
 
-  if( socket_listen( $sock, 5 ) === false ) {
+  if( socket_listen( $sock, 5 ) === false ) 
     echo "socket_listen() failed. Reason:" . socket_strerror( socket_last_error( $sock ) ) . "\n";
-  } 
-
-  echo "Listening... to port $port\n";
+  else
+    echo "Listening... to port $port\n";
 
   do {
     echo "Listening...\n";
