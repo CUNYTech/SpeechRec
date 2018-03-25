@@ -1,0 +1,9 @@
+The file name are self explanatory.
+
+The only file need attention here is php.ini.
+Move that file into /etc/php/7.0/apache2/php.ini
+  or where apache server is loading its php.ini file
+  This can be found by having a php file that does phpinfo(); and go to that php file on web browser. It will tell you which ini file it's loading up. Move this php file into the
+  desinated location. Or just change php.ini's post_max_size and also upload_max_filesize to be same as well. If uploaded file is greate than post_max_size, $_FILES will be empty.
+
+Also do     chown -R www-data /dir/for/file/uploads   THIS WILL GIVE PHP SCRIPT PERMISSION TO WRITE TO CERTAIN FOLDER.
