@@ -58,4 +58,11 @@ echo "Installing Summary Program done. NONE AS OF YET"
 echo ""
 echo ""
 
+echo "Last configuring..."
+echo "**********************************************"
+chown -R www-data $working_space_dir
+echo "Almost done configuring, please manually configure /etc/php/7.0/apache2/php.ini the variable post_max_size and upload_max_filesize to the proper value."
+echo ""
+echo ""
+
 echo "Setup Done! Enjoy!"
