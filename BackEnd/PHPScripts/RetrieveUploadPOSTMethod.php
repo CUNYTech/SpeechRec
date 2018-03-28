@@ -65,6 +65,6 @@ echo "Hello!<br>\n";
 retrieveUpload('binaryfile');
 echo "Today is " . date("m/d/y") . " <br>\n";
 echo "The time is " . date("h:i:sa") . " <br>\n";
-file_put_contents($upload_dir+"incoming.txt", ob_get_contents());
+file_put_contents($upload_dir . "incoming.txt", ob_get_contents());
 ob_end_clean();
 ?>
