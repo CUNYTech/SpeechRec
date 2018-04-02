@@ -10,6 +10,11 @@
 // don't let the script time out
 set_time_limit(0);
 
+// some global variable
+$upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
+$error_msg_dir = $upload_dir . 'msg.txt';
+  
+
 // $name will be decided what type of incoming request type. 'binaryfile' is for audio upload, 'login' will be for login with it's own logic.
 function retrieveUpload( $name ) {
 if ( isset($_FILES[$name]) ) {
@@ -42,8 +47,8 @@ echo "nothing is set!<br>\n";
   }
 
 
-  $upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
   $uploaded_file_dir = $upload_dir . basename( $_FILES[$name]['name'] );
+
 
   echo "<pre>\n";
   if( move_uploaded_file( $_FILES[$name]['tmp_name'], $uploaded_file_dir ) ) {
@@ -61,10 +66,11 @@ echo "nothing is set!<br>\n";
 
 ob_start();
 echo "Hello!<br>\n";
-//retrieveUpload('userfile');
-retrieveUpload('binaryfile');
+//retrieveUpload('requesttype');
+//retrieveUpload('binaryfile');
+retrieveUpload('Json');
 echo "Today is " . date("m/d/y") . " <br>\n";
 echo "The time is " . date("h:i:sa") . " <br>\n";
-file_put_contents($upload_dir . "incoming.txt", ob_get_contents());
+file_put_contents($error_msg_dir, ob_get_contents());    // NOT WORKING FOR SOME REASON< WILL HAVE TO FIX LATER.
 ob_end_clean();
 ?>
