@@ -1,97 +1,86 @@
 <?php
-include './User_AccountOverallFunctions.php';
-include './JobsOverallFunctions.php';
 
-$servername = "localhost";
-$username = "root";
-$password = "SpeechRec";
-$dbname = "SpeechRec";
-$requesttype = ""; 	// Request type "Create Account", "Request Audio", "Request Transcript", "Request Summary", "Job Submission", "Change Password", "Delete Account", "Remove Message" (Removes audio, text and summary), "Login Request", "Logout Request".
+// Make sure form size in form.html and php.ini's post_max_size are the same, and also upload_max_filesize to be same as well. If uploaded file is greate than post_max_size, $_FILES will be empty.
+// After you make changes to php.ini in 	/etc/php/7.0/apache2/php.ini   make sure to restart apache  sudo service apache2 restart. 
+// phpinfo() will, at the top, tell you where it's looking for the config files.
+// Current post_max_size is 15M, upload_max_filesize is 10M.
+// Make sure you editing the correct php file, calling phpinfo() on a local script will not tell you correct place, best have the script in /var/www/html/ and then go to browser to see config where it's loading php.ini
+// Also do     chown -R www-data /dir/for/file/uploads   THIS WILL GIVE PHP SCRIPT PERMISSION TO WRITE TO CERTAIN FOLDER.
 
-//----------------------------------------------------------------------------
-// Create connection
-$conn = mysqli_connect( $servername, $username, $password );
+// don't let the script time out
+set_time_limit(0);
 
-// Check connection
-if( !$conn ) {
-  die( "Connection failed: " . mysqli_connect_error() . "\n");
+// some global variable
+$upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
+$error_msg_dir = $upload_dir . 'msg.txt';
   
+
+// $name will be decided what type of incoming request type. 'binaryfile' is for audio upload, 'login' will be for login with it's own logic.
+function retrieveUpload( $name ) {
+if ( isset($_FILES[$name]) ) {
+    //print_r($_FILES);
+}else
+echo "nothing is set!<br>\n";
+
+  // Checks if files is uploaded.
+  if( !is_uploaded_file( $_FILES[$name]['tmp_name'] ) ) {
+    echo "File not uploaded<br>\n";
+    echo "Here is some more debugging info: <br>\n";
+    print_r($_FILES);
+    if( $_FILES[$name]['error'] == '1' )
+      echo "The uploaded file exceeds the upload_max_filesize directive in php.ini. <br>\n";
+    if( $_FILES[$name]['error'] == '2' )
+      echo "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.<br>\n";
+    if( $_FILES[$name]['error'] == '3' )
+      echo "The uploaded file was only partially uploaded.<br>\n";
+    if( $_FILES[$name]['error'] == '4' )
+      echo "No file was uploaded.<br>\n";
+    if( $_FILES[$name]['error'] == '5' )
+      echo "No entry on this error 5 on php.net/manual<br>\n";
+    if( $_FILES[$name]['error'] == '6' )
+      echo "Missing a temporary folder.<br>\n";
+    if( $_FILES[$name]['error'] == '7' )
+      echo "Failed to write file to disk.<br>\n";
+    if( $_FILES[$name]['error'] == '8' )
+      echo "A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help.<br>\n";
+    return false;
+  }
+
+
+  $uploaded_file_dir = $upload_dir . basename( $_FILES[$name]['name'] );
+
+
+  echo "<pre>\n";
+  if( move_uploaded_file( $_FILES[$name]['tmp_name'], $uploaded_file_dir ) ) {
+    echo "File is valid, and was successfully uploaded.<br>\n";
+  }
+  else {
+    echo "Possible file upload attack!<br>\n";
+    echo "Here is some more debugging info: <br>\n";
+    print_r($_FILES);
+  }
+  echo "</pre>\n";
+
+  return true;
 }
-//echo "Connected successfully\n";
 
-// Access the correct database
-$sql = "USE $dbname";
-if( !mysqli_query( $conn, $sql ) )
-  die( "Error: <" . $sql . "> | " . mysqli_error( $conn ) );
-//----------------------------------------------------------------------------
-//InsertIntoMessages( $conn, "2", "yizongk", "xxx.wav", "/home/cunycode/audio", "/home/cunycode/text", "/home/cunycode/summary" );
-//echo RequestAudioPath( $conn, "2" ) . "\n";
-//echo RequestTextPath( $conn, "2" ) . "\n";
-//echo RequestSumTextPath( $conn, "2" ) . "\n";
-//RequestMessageRemoval( $conn, "Message_ID", "2" );
-//if( DeleteAccount( $conn, "yizo", "hel" ) )
-//  echo "Deleted successfully!\n";
-//else
- // echo "Not Deleted!\n";
-//if(CreateAccount( $conn, "yizo", "hel" ))
-//  echo "Created Successfully!\n";
-//if( ChangePassword( $conn, "yizo", "newpass", "hel" ) )
-//  echo "Pass changed successfully!\n";
-//$temp=GetTranscriptPathName( $conn, "3" );
-//if(is_null($temp))
-//  echo "NULL\n";
-//else
-//  echo "$temp\n";
-/*
-// Checks for the type of request
-switch ( $requesttype ) {
-  case "Create Account":	//Expects this format: ""
-    CreateAccount($conn, $username, $password);
-    break;
-  case "Login Request":
-    Login
-    break;
-  case "Logout Request":
-    break;
-  case "Change Password":
-    break;
-  case "Delete Account":
-    break;
-  case "Job Submission":
-    break;
-  case "Request Audio":
-    break;
-  case "Request Transcript":
-    break;
-  case "Request Summary":
-    break;
-  case "Remove Message":
-    break;
+function processIncomingJson() {
+  $json_data = json_decode( file_get_contents('php://input'), true );
+  print_r($json_data);
 }
-*/
 
-
-
-
-
-
-
-
-//InsertIntoUser_Account($conn,"123","yizongk","omg");
-//InsertIntoMessages( $conn, "44", "yizongk", "cat", "/home/ubuntu/data_dir/cat.wav", "/home/ubuntu/data_dir/cat.txt", "/home/ubuntu/data_dir/cat.sum.txt" );
-//InsertIntoUser( $conn, "1", "yi zong", "kuang", "347-525-5576", "yizongk@gmail.com", "123", "44" );
-//ModifyUserAccount( $conn, "123", "Password", "newpass!" );
-//ModifyMessages( $conn, "44", "Audio_Path", "/home" );			// ONLY User's ID can be changed, other two's ID are referenced by User, so their ID cannot be modified
-//ModifyUser( $conn, "1", "Last_Name", "Rodin" );
-//RemoveUser( $conn, "1" );            //SINCE USERACC AND MESSAGE HAVE DATA CONNECTED TO USER, USER must be deleted first, before the other two can be deleted.
-//RemoveUserAccount( $conn, "123" );
-//RemoveMessage( $conn, "44" );
-//PrintAudioPathName( $conn, "44" ) . "\n";
-//PrintTranscriptPathName( $conn, "44" ) . "\n";
-//PrintSummaryPathName( $conn, "44" ) . "\n";
-
-
-// Close connection
-mysqli_close( $conn );
-//echo "Connection closed\n";
+ob_start();
+echo "Hello!<br>\n";
+echo "Today is " . date("m/d/y") . " <br>\n";
+echo "The time is " . date("h:i:sa") . " <br>\n";
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+  //retrieveUpload('requesttype');
+  //retrieveUpload('binaryfile');
+  //retrieveUpload('json');
+  processIncomingJson();
+} else {
+  echo "Request type is not POST!";
+}
+file_put_contents($error_msg_dir, ob_get_contents());    
+ob_end_clean();
 ?>
