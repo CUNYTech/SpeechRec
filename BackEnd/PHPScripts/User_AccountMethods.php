@@ -1,13 +1,11 @@
 <?php
-include './User_AccountTableFunctions.php';
-include './MessagesTableFunctions.php';
-include './UserTableFunctions.php';
+include_once './User_AccountTableModules.php';
 
 //MAYBE I SHOULD HAVE A VARIABLE HOLDING ERROR MESSAGE (if any) TO GO INTO FCT AS BE RETURNED BY REFERENCE.
 
 //"Create Account", "Login Request", "Delete Account", "Change Password", "Logout Request".
 
-function CreateAccount( $conn, $username, $password, $msg ) {
+function CreateAccount( $conn, $username, $password, &$msg ) {
   //Check if username already exist, if so, return false, and echo "Username already exists!"
   if( FindDataUser_Account( $conn, "User_Name", $username ) ) {
     $msg = "Username already exists!\n";
@@ -25,7 +23,7 @@ function CreateAccount( $conn, $username, $password, $msg ) {
   }
 }
 
-function LoginRequest( $conn, $username, $password, $msg ) {	//WILL ALSO MODIFY IN TABLE TO ONLINE STATUS
+function LoginRequest( $conn, $username, $password, &$msg ) {	//WILL ALSO MODIFY IN TABLE TO ONLINE STATUS
   if( FindDataUser_Account( $conn, "User_Name", $username, $msg ) ) {
     // Find the associated password and see if match with input password.
     if( $password == AccessUser_Account( $conn, "User_Name", $username, "Password", $msg ) ) {
@@ -39,7 +37,7 @@ function LoginRequest( $conn, $username, $password, $msg ) {	//WILL ALSO MODIFY 
   return false;
 }
 
-function DeleteAccount( $conn, $username, $password, $msg ) {
+function DeleteAccount( $conn, $username, $password, &$msg ) {
   // Request Login credential
   if( LoginRequest( $conn, $username, $password, $msg ) ) {
     // Delete Account.
@@ -56,7 +54,7 @@ function DeleteAccount( $conn, $username, $password, $msg ) {
   return false;
 }
 
-function ChangePassword( $conn, $username, $password, $new_password, $msg ) {
+function ChangePassword( $conn, $username, $password, $new_password, &$msg ) {
   // Request Login credential
   if( LoginRequest( $conn, $username, $password, $msg ) ) {
     // Change Password.
@@ -73,7 +71,7 @@ function ChangePassword( $conn, $username, $password, $new_password, $msg ) {
   return false;
 }
 
-function LogoutRequest( $conn, $username, $msg ) {
+function LogoutRequest( $conn, $username, &$msg ) {
 //UPDATE USER ACCOUNT AS OFFLINE!
 }
 

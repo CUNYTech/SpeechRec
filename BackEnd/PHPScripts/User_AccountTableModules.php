@@ -1,6 +1,6 @@
 <?php
 // Access specific data, return NULL if nothing found.
-function AccessUser_Account( $conn, $member, $member_key, $target_member, $msg ) {
+function AccessUser_Account( $conn, $member, $member_key, $target_member, &$msg ) {
   $sql = "SELECT * FROM User_Account WHERE $member = '$member_key' ";
   $result = mysqli_query( $conn, $sql );
 
@@ -21,7 +21,7 @@ function AccessUser_Account( $conn, $member, $member_key, $target_member, $msg )
 }
 
 // Search User_Account Data existence 
-function FindDataUser_Account( $conn, $member, $member_key, $msg ) {
+function FindDataUser_Account( $conn, $member, $member_key, &$msg ) {
   $sql = "SELECT * FROM User_Account WHERE $member = '$member_key' ";
   $result = mysqli_query( $conn, $sql );
 
@@ -41,7 +41,7 @@ function FindDataUser_Account( $conn, $member, $member_key, $msg ) {
 }
 
 // Injection into mysql User_Account
-function InsertIntoUser_Account( $conn, $id, $username, $password, $msg ) {
+function InsertIntoUser_Account( $conn, $id, $username, $password, &$msg ) {
   $sql = "INSERT INTO User_Account (User_Account_ID, User_Name, Password) VALUES ('$id', '$username', '$password')";
 
   if( mysqli_query( $conn, $sql ) ) { 
@@ -55,7 +55,7 @@ function InsertIntoUser_Account( $conn, $id, $username, $password, $msg ) {
 }
 
 // Modifying mysql User_Account
-function ModifyUserAccount( $conn, $member, $member_key, $target_member, $target_member_update, $msg ) {
+function ModifyUserAccount( $conn, $member, $member_key, $target_member, $target_member_update, &$msg ) {
   $sql = "UPDATE User_Account SET $target_member = '$target_member_update' WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
@@ -69,7 +69,7 @@ function ModifyUserAccount( $conn, $member, $member_key, $target_member, $target
 }
 
 // Delete mysql User_Account
-function RemoveUserAccount( $conn, $member, $member_key, $msg ) {
+function RemoveUserAccount( $conn, $member, $member_key, &$msg ) {
   $sql = "DELETE FROM User_Account WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
