@@ -1,5 +1,8 @@
 <?php
 
+//include './User_AccountOverallFunctions.php';
+include './JobsOverallFunctions.php';
+
 // Make sure form size in form.html and php.ini's post_max_size are the same, and also upload_max_filesize to be same as well. If uploaded file is greate than post_max_size, $_FILES will be empty.
 // After you make changes to php.ini in 	/etc/php/7.0/apache2/php.ini   make sure to restart apache  sudo service apache2 restart. 
 // phpinfo() will, at the top, tell you where it's looking for the config files.
@@ -64,9 +67,67 @@ echo "nothing is set!<br>\n";
   return true;
 }
 
-function processIncomingJson() {
+function getDBConnection() {
+  $servername = "localhost";
+  $username = "root";
+  $password = "SpeechRec";
+  $dbname = "SpeechRec";
+  
+  // Create connection
+  $conn = mysqli_connect( $servername, $username, $password );
+
+  // Check connection
+  if( !$conn ) {
+    echo( "Connection failed: " . mysqli_connect_error() . "\n");
+
+    return false;
+  }
+
+  // Access the correct database
+  $sql = "USE $dbname";
+  if( !mysqli_query( $conn, $sql ) ) {
+    echo ( "Error: <" . $sql . "> | " . mysqli_error( $conn ) );
+
+    return false;
+  }
+  
+  return $conn;
+}
+
+function closeDBConnection($conn) {
+  // Close connection,  assumes will work every time (got to double check this), so will return true;
+  mysqli_close( $conn );
+  return true;
+}
+
+function recieveIncomingJson() {
   $json_data = json_decode( file_get_contents('php://input'), true );
   print_r($json_data);
+  return $json_data;
+}
+
+function processJson($json_data) {
+  if($json_data[type] === 'Login') {
+    echo "login type \n";
+    $msg = "";
+    $conn = getDBConnection();
+//echo $json_data[username]." ".$json_data[password];
+    $success = Login($conn,$json_data[username],$json_data[password],$msg);
+    closeDBConnection($conn);
+return true;
+    //return $success;
+  }
+  if($json_data[type] === 'Logout') {
+    echo "logout type \n";
+    return true;
+  }
+  if($json_data[type] === 'JobSubmit') {
+    echo "job submit type \n";
+    return true;
+  }
+echo "$json_data[type]";
+echo "but nothing process!\n";
+  return false;
 }
 
 ob_start();
@@ -77,7 +138,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   //retrieveUpload('requesttype');
   //retrieveUpload('binaryfile');
   //retrieveUpload('json');
-  processIncomingJson();
+  $json_data = recieveIncomingJson();
+  echo processJson($json_data);
 } else {
   echo "Request type is not POST!";
 }
