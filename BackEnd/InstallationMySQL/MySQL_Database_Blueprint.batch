@@ -4,6 +4,7 @@ CREATE TABLE Users (
   			   User_ID 	   INT NOT NULL AUTO_INCREMENT UNIQUE,
 			   User_Name  	   VARCHAR(20) UNIQUE,
 			   Password	   VARCHAR(20),
+			   Online_Status   BOOL
 
 			   CONSTRAINT UC_User UNIQUE (User_ID,User_Name),
                            PRIMARY KEY (User_ID)
