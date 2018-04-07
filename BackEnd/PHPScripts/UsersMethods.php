@@ -1,5 +1,5 @@
 <?php
-include_once './User_AccountTableModules.php';
+include_once './UsersTableModules.php';
 
 //MAYBE I SHOULD HAVE A VARIABLE HOLDING ERROR MESSAGE (if any) TO GO INTO FCT AS BE RETURNED BY REFERENCE.
 
@@ -7,27 +7,35 @@ include_once './User_AccountTableModules.php';
 
 function CreateAccount( $conn, $username, $password, &$msg ) {
   //Check if username already exist, if so, return false, and echo "Username already exists!"
-  if( FindDataUser_Account( $conn, "User_Name", $username ) ) {
+  if( FindDataUser( $conn, "User_Name", $username ) ) {
     $msg = "Username already exists!\n";
     return false;
   }
 
   //Insert into MySQL
-  if( InsertIntoUser_Account( $conn, "4", $username, $password, $msg ) ) {
-    $msg = "New User_Account created successfully\n";
+  if( InsertIntoUser( $conn, $username, $password, $msg ) ) {
+    $msg = "New User created successfully\n";
     return true;
   }
   else {
-    $msg = "New User_Account failed to create\n";
+    $msg = "New User failed to create\n";
     return false;
   }
 }
 
+function SetOnline( $conn, $username, &$msg ) {
+  return ModifyUser($conn,"User_Name",$username,"Online_Status", 1, $msg);
+}
+
+function SetOffline( $conn, $username, &$msg ) {
+  return ModifyUser($conn,"User_Name",$username,"Online_Status", 0, $msg);
+}
+
 function LoginRequest( $conn, $username, $password, &$msg ) {	//WILL ALSO MODIFY IN TABLE TO ONLINE STATUS
-  if( FindDataUser_Account( $conn, "User_Name", $username, $msg ) ) {
+  if( FindDataUser( $conn, "User_Name", $username, $msg ) ) {
     // Find the associated password and see if match with input password.
-    if( $password == AccessUser_Account( $conn, "User_Name", $username, "Password", $msg ) ) {
-      return true;
+    if( $password == AccessUser( $conn, "User_Name", $username, "Password", $msg ) ) {
+      return SetOnline($conn,$username,$msg);
     }
     $msg = "Wrong Password!\n";
   }
@@ -37,12 +45,12 @@ function LoginRequest( $conn, $username, $password, &$msg ) {	//WILL ALSO MODIFY
   return false;
 }
 
-function DeleteAccount( $conn, $username, $password, &$msg ) {
+function DeleteUser( $conn, $username, $password, &$msg ) {
   // Request Login credential
   if( LoginRequest( $conn, $username, $password, $msg ) ) {
     // Delete Account.
-    if( RemoveUserAccount( $conn, "User_Name", $username, $msg ) ) {
-      $msg = "Removed Account Successfully.\n";
+    if( RemoveUser( $conn, "User_Name", $username, $msg ) ) {
+      $msg = "Removed User Successfully.\n";
       return true;
     }
     else {
@@ -58,21 +66,20 @@ function ChangePassword( $conn, $username, $password, $new_password, &$msg ) {
   // Request Login credential
   if( LoginRequest( $conn, $username, $password, $msg ) ) {
     // Change Password.
-    if( ModifyUserAccount( $conn, "User_Name", $username, "Password", $new_password, $msg ) ) {
-      $msg = "Modified Successfully.\n";
-      return true;
-    }
-    else {
-      $msg = "Modify FAILED.\n";
-      return false;
-    }
+    return ModifyUser( $conn, "User_Name", $username, "Password", $new_password, $msg );
   }
   $msg = "Bad Login.\n";
   return false;
 }
 
 function LogoutRequest( $conn, $username, &$msg ) {
-//UPDATE USER ACCOUNT AS OFFLINE!
+  // Request Login credential
+  if( LoginRequest( $conn, $username, $password, $msg ) ) {
+    // Log out.
+    return ModifyUser( $conn, "User_Name", $username, "Online_Status", 0, $msg );
+  }
+  $msg = "Bad Login.\n";
+  return false;
 }
 
 

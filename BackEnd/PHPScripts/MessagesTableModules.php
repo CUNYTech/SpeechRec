@@ -37,8 +37,8 @@ function FindDataMessages( $conn, $member, $member_key, &$msg ) {
 }
 
 // Injection into mysql Messages
-function InsertIntoMessages( $conn, $id, $username, $filename, $audio_path, $text_path, $summary_path, &$msg ) {
-  $sql = "INSERT INTO Messages (Message_ID, Audio_Path, Text_Path, Summarized_Text_Path) VALUES ('$id', '$audio_path', '$text_path', '$summary_path')";
+function InsertIntoMessages( $conn, $user_id, $audio_path, &$msg ) {
+  $sql = "INSERT INTO Messages (User_ID, Audio_Path) VALUES ('$id', '$audio_path')";
 
   if( mysqli_query( $conn, $sql ) ) {
     $msg = "Insert Complete.";
