@@ -13,7 +13,7 @@ function CreateAccount( $conn, $username, $password, &$msg ) {
   }
 
   //Insert into MySQL
-  if( InsertIntoUser_Account( $conn, "2", $username, $password, $msg ) ) {
+  if( InsertIntoUser_Account( $conn, "4", $username, $password, $msg ) ) {
     $msg = "New User_Account created successfully\n";
     return true;
   }

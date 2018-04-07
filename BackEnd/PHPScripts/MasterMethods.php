@@ -8,6 +8,45 @@ include_once './User_AccountMethods.php';
 
 //"Job Submission", "Request Audio", "Request Transcript", "Request Summary", " "Remove Message" (Removes audio, text and summary)".
 
+
+/* CORE FUNCTIONS */
+function getDBConnection() {
+  $servername = "localhost";
+  $username = "root";
+  $password = "SpeechRec";
+  $dbname = "SpeechRec";
+  
+  // Create connection
+  $conn = mysqli_connect( $servername, $username, $password );
+
+  // Check connection
+  if( !$conn ) {
+    echo( "Connection failed: " . mysqli_connect_error() . "\n");
+
+    return false;
+  }
+
+  // Access the correct database
+  $sql = "USE $dbname";
+  if( !mysqli_query( $conn, $sql ) ) {
+    echo ( "Error: <" . $sql . "> | " . mysqli_error( $conn ) );
+
+    return false;
+  }
+  
+  return $conn;
+}
+
+function closeDBConnection($conn) {
+  // Close connection,  assumes will work every time (got to double check this), so will return true;
+  mysqli_close( $conn );
+  return true;
+}
+
+
+
+/* Normal Methods */
+
 // Assumes that audio file is in working_directory before calling.
 function JobSubmission( $conn, $username, $audio_filename, $source_ip, &$msg ) {
   // Find next audio ID in data_dir, not mysql, cuz they might have different ID#
@@ -25,29 +64,60 @@ function JobSubmission( $conn, $username, $audio_filename, $source_ip, &$msg ) {
   // sends back summary text to original IP.
 }
 
-function Login( $conn, $username, $password, &$msg ) {
-  return LoginRequest( $conn, $username, $password, $msg );
+function CreateAcc( $username, $password ) {  // Create Account ID, must be unique somehow
+  $msg = "";
+  $conn = getDBConnection();
+  $success = CreateAccount($conn, $username, $password, $msg);
+  closeDBConnection($conn);
+  echo $msg . "\n";
+  return $success;
+}
+
+function Login( $username, $password ) {
+  $msg = "";
+  $conn = getDBConnection();
+  $success = LoginRequest( $conn, $username, $password, $msg );
+  closeDBConnection($conn);
+  echo $msg . "\n";
+  return $success;
 }
 
 // Assumes $member to be Message_ID, and member_key to be its id number.
 //stil need to add column for file name in mysql Messages and then append that to function output.
-function RequestAudioPath( $conn, $member_key, &$msg ) {
-  //return AccessMessages( $conn, $member, $member_key, "Audio_Path", $msg );
-  return GetAudioPathName( $conn, $member_key, $msg );
+function RequestAudioPath( $member_key ) {
+  $msg = "";
+  $conn = getDBConnection();
+  $success = GetAudioPathName( $conn, $member_key, $msg );
+  closeDBConnection($conn);
+  echo $msg . "\n";
+  return $success;
 }
 
-function RequestTextPath( $conn, $member_key, &$msg ) {
-  //return AccessMessages( $conn, $member, $member_key, "Text_Path", $msg );
-  return GetTranscriptPathName( $conn, $member_key, $msg );
+function RequestTextPath( $member_key ) {
+  $msg = "";
+  $conn = getDBConnection();
+  $success = GetTranscriptPathName( $conn, $member_key, $msg );
+  closeDBConnection($conn);
+  echo $msg . "\n";
+  return $success;
 }
 
-function RequestSumTextPath( $conn, $member_key, &$msg ) {
-  //return AccessMessages( $conn, $member, $member_key, "Summarized_Text_Path", $msg );
-  return GetSummaryPathName( $conn, $member_key, $msg );
+function RequestSumTextPath( $member_key ) {
+  $msg = "";
+  $conn = getDBConnection();
+  $success = GetSummaryPathName( $conn, $member_key, $msg );
+  closeDBConnection($conn);
+  echo $msg . "\n";
+  return $success;
 }
 
-function RequestMessageRemoval( $conn, $member, $member_key, &$msg ) {
-  return RemoveMessage( $conn, $member, $member_key, $msg );
+function RequestMessageRemoval( $member, $member_key ) {
+  $msg = "";
+  $conn = getDBConnection();
+  $success = RemoveMessage( $conn, $member, $member_key, $msg );
+  closeDBConnection($conn);
+  echo $msg . "\n";
+  return $success;
 }
 
 ?>
