@@ -1,40 +1,26 @@
 CREATE DATABASE SpeechRec;
 USE SpeechRec;
-CREATE TABLE User_Account ( 	
-  			   User_Account_ID VARCHAR(20) UNIQUE,
+CREATE TABLE Users ( 	
+  			   User_ID 	   INT NOT NULL AUTO_INCREMENT UNIQUE,
 			   User_Name  	   VARCHAR(20) UNIQUE,
-			   Password	   VARCHAR(20) UNIQUE,
+			   Password	   VARCHAR(20),
 
-			   CONSTRAINT UC_User_Account UNIQUE (User_Account_ID,User_Name,Password),
-                           PRIMARY KEY (User_Account_ID)
+			   CONSTRAINT UC_User UNIQUE (User_ID,User_Name),
+                           PRIMARY KEY (User_ID)
  			  );
 
 CREATE TABLE Messages ( 
-		       Message_ID      		varchar(20) NOT NULL,
+		       Message_ID      		INT NOT NULL AUTO_INCREMENT UNIQUE,
+		       User_ID	  		INT NOT NULL,
        		       Audio_Path             	varchar(100),
        	   	       Text_Path            	varchar(100), 
        		       Summarized_Text_Path  	varchar(100), 
-       		       UNIQUE (Message_ID), 
-       		       PRIMARY KEY (Message_ID)
 
+       		       PRIMARY KEY (Message_ID)
 		      );
 
-CREATE TABLE User ( 
-                   User_ID          varchar(20) NOT NULL,
-                   First_Name       varchar(20),
-                   Last_Name        varchar(20), 
-                   Phone_Number     varchar(20),
-                   Email            varchar(20),
-                   User_Account_ID  varchar(20),
-                   Message_ID      varchar(20),
-                   UNIQUE (User_ID), 
-                   PRIMARY KEY (User_ID)
-    		  );
 
-ALTER TABLE User
-ADD FOREIGN KEY (User_Account_ID) REFERENCES User_Account(User_Account_ID);
-
-ALTER TABLE User
-ADD FOREIGN KEY (Message_ID) REFERENCES Messages(Message_ID);
+ALTER TABLE Messages
+ADD FOREIGN KEY (User_ID) REFERENCES Users(User_ID);
 
 

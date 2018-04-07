@@ -11,9 +11,9 @@ echo "======================================================================"
 echo ""
 
 echo "----------------------------------------------------------------------"
-echo "COMMAND: 'COMMAND: 'mysql -N -u $mysql_user -p *secret!* < $script_dir/MySQL_Database_Blueprint.batch'"
+echo "COMMAND: 'COMMAND: 'mysql -N -u $mysql_user -p *secret!* < $script_dir/MySQL_Database_Clean.batch'"
 echo "----------------------------------------------------------------------"
-mysql -N -u $mysql_user -p$mysql_pass < $script_dir/MySQL_Database_Blueprint.batch
+mysql -N -u $mysql_user -p$mysql_pass < $script_dir/MySQL_Database_Clean.batch
 
 echo "----------------------------------------------------------------------"
 echo "Bash Script Completed!"
