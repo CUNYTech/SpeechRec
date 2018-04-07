@@ -1,7 +1,7 @@
 <?php
 // Access specific data, return NULL if nothing found.
-function AccessUser_Account( $conn, $member, $member_key, $target_member, &$msg ) {
-  $sql = "SELECT * FROM User_Account WHERE $member = '$member_key' ";
+function AccessUser( $conn, $member, $member_key, $target_member, &$msg ) {
+  $sql = "SELECT * FROM Users WHERE $member = '$member_key' ";
   $result = mysqli_query( $conn, $sql );
 
   if( $result === false ) {
@@ -11,18 +11,18 @@ function AccessUser_Account( $conn, $member, $member_key, $target_member, &$msg 
   
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    $msg = "User Account Accessed.";
+    $msg = "User Accessed.";
     return $row[$target_member];
   }
   else {
-    $msg = "User Account Not Accessed.";
+    $msg = "User Not Accessed.";
     return false; 
   }   
 }
 
-// Search User_Account Data existence 
-function FindDataUser_Account( $conn, $member, $member_key, &$msg ) {
-  $sql = "SELECT * FROM User_Account WHERE $member = '$member_key' ";
+// Search User Data existence 
+function FindDataUser( $conn, $member, $member_key, &$msg ) {
+  $sql = "SELECT * FROM Users WHERE $member = '$member_key' ";
   $result = mysqli_query( $conn, $sql );
 
   if( $result === false ) {
@@ -31,21 +31,21 @@ function FindDataUser_Account( $conn, $member, $member_key, &$msg ) {
   }
 
   if( mysqli_num_rows( $result ) > 0 ) {
-    $msg = "Found Data in User Account Table.";
+    $msg = "Found Data in User Table.";
     return true;
   }
   else {
-    $msg = "Did NOT find Data in User Account Table.";
+    $msg = "Did NOT find Data in User Table.";
     return false;    
   }
 }
 
-// Injection into mysql User_Account
-function InsertIntoUser_Account( $conn, $id, $username, $password, &$msg ) {
-  $sql = "INSERT INTO User_Account (User_Account_ID, User_Name, Password) VALUES ('$id', '$username', '$password')";
+// Injection into mysql User
+function InsertIntoUser( $conn, $username, $password, &$msg ) {
+  $sql = "INSERT INTO Users (User_Name, Password) VALUES ('$username', '$password')";
 
   if( mysqli_query( $conn, $sql ) ) { 
-    $msg = "Insert into User Account Successfully.";
+    $msg = "Insert into User Successfully.";
     return true;
   }
   else {
@@ -54,12 +54,12 @@ function InsertIntoUser_Account( $conn, $id, $username, $password, &$msg ) {
   } 
 }
 
-// Modifying mysql User_Account
-function ModifyUserAccount( $conn, $member, $member_key, $target_member, $target_member_update, &$msg ) {
-  $sql = "UPDATE User_Account SET $target_member = '$target_member_update' WHERE $member = '$member_key'";
+// Modifying mysql Users
+function ModifyUser( $conn, $member, $member_key, $target_member, $target_member_update, &$msg ) {
+  $sql = "UPDATE Users SET $target_member = '$target_member_update' WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
-    $msg = "User Account Modified Successfully.";
+    $msg = "User Modified Successfully.";
     return true;
   }
   else {
@@ -68,12 +68,12 @@ function ModifyUserAccount( $conn, $member, $member_key, $target_member, $target
   }
 }
 
-// Delete mysql User_Account
-function RemoveUserAccount( $conn, $member, $member_key, &$msg ) {
-  $sql = "DELETE FROM User_Account WHERE $member = '$member_key'";
+// Delete mysql Users
+function RemoveUser( $conn, $member, $member_key, &$msg ) {
+  $sql = "DELETE FROM Users WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
-    $msg = "User Account Removed Successfully.";
+    $msg = "User Removed Successfully.";
     return true;
   }
   else {
