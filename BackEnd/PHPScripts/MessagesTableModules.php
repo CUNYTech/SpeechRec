@@ -1,136 +1,137 @@
 <?php
+
 // Access specific data, return falseL if nothing found.
-function AccessMessages( $conn, $member, $member_key, $target_member, &$msg ) {
+function AccessMessages( $conn, $member, $member_key, $target_member ) {
   $sql = "SELECT * FROM Messages WHERE $member = '$member_key' ";
   $result = mysqli_query( $conn, $sql );
 
   if( $result === false )
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
   
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    $msg = "Message Accessed.";
+    echo "Message Accessed. \n";
     return $row[$target_member];
   }
   else {
-    $msg = "Message Not Found.";
+    echo "Message Not Found. \n";
     return false; 
   }   
 }
 
 // Generic Search Messages Data existence 
-function FindDataMessages( $conn, $member, $member_key, &$msg ) {
+function FindDataMessages( $conn, $member, $member_key ) {
   $sql = "SELECT * FROM Messages WHERE $member = '$member_key' ";
   $result = mysqli_query( $conn, $sql ) ;
 
   if( $result === false )
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
 
   if( mysqli_num_rows( $result ) > 0 ) {
-    $msg = "Message Found.";
+    echo "Message Found. \n";
     return true;
   }
   else {
-    $msg = "Message Not Found.";
+    echo "Message Not Found. \n";
     return false;  
   }  
 }
 
 // Injection into mysql Messages
-function InsertIntoMessages( $conn, $user_id, $audio_path, &$msg ) {
+function InsertIntoMessages( $conn, $user_id, $audio_path ) {
   $sql = "INSERT INTO Messages (User_ID, Audio_Path) VALUES ('$id', '$audio_path')";
 
   if( mysqli_query( $conn, $sql ) ) {
-    $msg = "Insert Complete.";
+    echo "Insert Complete. \n";
     return true;
   }
   else {
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
     return false;
   }
 }
 
 // Generic Modifying mysql Messages
-function ModifyMessages( $conn, $member, $member_key, $member_update, $update, &$msg ) {
+function ModifyMessages( $conn, $member, $member_key, $member_update, $update ) {
   $sql = "UPDATE Messages SET $member_update = '$update' WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
-    $msg = "Message Modified.";
+    echo "Message Modified. \n";
     return true;
   }
   else {
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
     return false;
   }
 }
 
 // Generic Delete mysql Message
-function RemoveMessage( $conn, $member, $member_key, &$msg ) {
+function RemoveMessage( $conn, $member, $member_key ) {
   $sql = "DELETE FROM Messages WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
-    $msg = "Messaged Removed.";
+    echo "Messaged Removed. \n";
     return true;
   }
   else {
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
     return false;
   }
 }
 
 // Request for audio's pathname, return false if none are found. Based on Message_ID
-function GetAudioPathName( $conn, $id, &$msg ) {
+function GetAudioPathName( $conn, $id ) {
   $sql = "SELECT Audio_Path FROM Messages WHERE Message_ID = '$id'";
   $result =  mysqli_query( $conn, $sql );
 
   if( $result === false )
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
 
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    $msg = "Audio Path Retrieved.";
+    echo "Audio Path Retrieved. \n";
     return $row['Audio_Path'];
   }
   else {
-    $msg = "Audio Path not found.";
+    echo "Audio Path not found. \n";
     return false;
   }
 }
 
 // Request for transcription's pathname, return false if none are found.
-function GetTranscriptPathName( $conn, $id, &$msg ) {
+function GetTranscriptPathName( $conn, $id ) {
   $sql = "SELECT Text_Path FROM Messages WHERE Message_ID = '$id'";
   $result = mysqli_query( $conn, $sql );
 
   if( $result === false )
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
  
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    $msg = "Transcript Path Retrieved.";
+    echo "Transcript Path Retrieved. \n";
     return $row['Text_Path'];
   }
   else {
-    $msg = "Transcript Path Not Found.";
+    echo "Transcript Path Not Found. \n";
     return false;
   }
 }
 
 // Request for summary's pathname, return false if none are found.
-function GetSummaryPathName( $conn, $id, &$msg ) {
+function GetSummaryPathName( $conn, $id ) {
   $sql = "SELECT Summarized_Text_Path FROM Messages WHERE Message_ID = '$id'";
   $result =  mysqli_query( $conn, $sql );
 
   if( $result === false )
-    $msg = "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
 
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    $msg = "Summary Path Found.";
+    echo "Summary Path Found. \n";
     return $row['Summarized_Text_Path'];
   }
   else {
-    $msg = "Summary Path Not Found.";
+    echo "Summary Path Not Found. \n";
     return false;
   }
 }
