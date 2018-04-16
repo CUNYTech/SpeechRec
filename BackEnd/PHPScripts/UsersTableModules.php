@@ -11,7 +11,7 @@ function AccessUser( $conn, $member, $member_key, $target_member ) {
   
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    echo "User Accessed. \n";
+    echo "User $member Accessed. \n";
     return $row[$target_member];
   }
   else {
@@ -42,8 +42,8 @@ function FindDataUser( $conn, $member, $member_key ) {
 
 
 // Injection into mysql User
-function InsertIntoUser( $conn, $username, $password ) {
-  $sql = "INSERT INTO Users (User_Name, Password) VALUES ('$username', '$password')";
+function InsertIntoUser( $conn, $username, $password, $phone_number, $first_name, $last_name ) {
+  $sql = "INSERT INTO Users (User_Name, Password, Phone_Number, First_Name, Last_Name) VALUES ('$username', '$password', '$phone_number', '$first_name', '$last_name')";
 
   if( mysqli_query( $conn, $sql ) ) { 
     echo "Insert into User Successfully. \n";

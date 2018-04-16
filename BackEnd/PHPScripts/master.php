@@ -23,14 +23,30 @@ echo "Today is " . date("m/d/y") . " <br>\n";
 echo "The time is " . date("h:i:sa") . " <br>\n";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   $json_data = recieveIncomingJson();
-  if( processJson($json_data) === true ) {
-    echo $json_data[type] . " is a Success! \n";
-    $arr->success = true;
-  } else {
-    echo $json_data[type] . " Failed! \n";
-    $arr->success = false;
-  }
+  if($json_data != null) {
+    if( processJson($json_data) === true ) {
+      echo $json_data[type] . " is a Success! \n";
+      $arr->success = true;
+    } else {
+      echo $json_data[type] . " Failed! \n";
+      $arr->success = false;
+    }
 
+
+  }else if(isset($_GET['apicall'])) {
+    echo "This is a api call\n";
+    $incoming_request_data = recieveIncomingRequest();
+    if( processRequest($incoming_request_data) === true ) {
+      // success
+      echo "\n Incoming request prcoessed and finished successfully. \n";
+    } else {
+      // failed
+      echo "\n Incoming request processed but did NOT finished successfully. \n";
+    }
+    
+  } else {
+    echo "POST request not recognized! \n";
+  }
 
 } else {
   echo "Request type is not POST!";
@@ -46,3 +62,5 @@ $myjson = json_encode($arr);
 echo $myjson;
 
 ?>
+
+

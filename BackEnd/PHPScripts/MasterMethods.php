@@ -1,7 +1,6 @@
 <?php
 include_once './UsersMethods.php';
 include_once './MessagesMethods.php';
-include_once './GlobalVar.php';
 
 /* some global variable */
 $upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
@@ -69,6 +68,66 @@ function recieveIncomingJson() {
   //print_r($json_data);
   return $json_data;
 }
+
+function recieveIncomingRequest() {
+  $request_data = null;
+
+  if(isset($_GET['apicall'])){
+    
+    switch($_GET['apicall']){
+    
+      case 'signup':
+      //if(isTheseParametersAvailable(array('username','email','password','phonenumber', 'firstName', 'lastName','gender'))){
+        $request_data = array(
+          'apicall'=>'signup',
+          'username' => $_POST['username'],
+          'email' => $_POST['email'],
+          //$password = md5($_POST['password']);
+          'password' => $_POST['password'],
+          'phonenumber' => $_POST['phonenumber'],
+          'firstName' => $_POST['firstName'],
+          'lastName' => $_POST['lastName'],
+          'gender' => $_POST['gender'],
+          'filename' => $_POST['filename']
+        );
+        echo "Sign Up Call.\n";
+      //}
+      break;
+
+      case 'login':
+      $request_data = array(
+        'apicall'=>'login',
+        'username' => $_POST['username'],
+        'password' => $_POST['password']
+      );
+      echo "Login Call\n";
+      break;
+
+      case 'logout':
+      $request_data = array(
+          'apicall'=>'logout',
+          'username' => $_POST['username']
+      );
+      echo "Logout Call\n";
+      break;
+
+      case 'jobsubmit';
+      $request_data = array(
+        'apicall'=>'jobsubmit',
+        'username' => $_POST['username'],
+        'filename' => $_POST['filename']
+      );
+      echo "Job Submit Call.\n";
+      break;
+
+    }
+    //echo "After break\n";
+    //print_r($request_data);
+    return ($request_data);
+
+  }
+  return null;
+}
   
 
 function getDBConnection() {
@@ -90,7 +149,7 @@ function getDBConnection() {
   // Access the correct database
   $sql = "USE $dbname";
   if( !mysqli_query( $conn, $sql ) ) {
-    echo "Error: <" . $sql . "> | " . mysqli_error( $conn );
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . " \n";
 
     return false;
   } 
@@ -109,12 +168,17 @@ function closeDBConnection($conn) {
 /* Normal Methods */
 
 // Assumes that audio file is in working_directory before calling.
-function JobSubmission( $username ) {
+function JobSubmission( $username, $filename ) {
   $conn = getDBConnection();
-//$success = retrieveUpload('binaryfile');;
-  $filename = basename( $_FILES[$name]['name']);
-  echo $filename . "\n";
-  // Find next audio ID in data_dir, not mysql, cuz they might have different ID#
+
+  if( isLogin( $conn, $username ) === false ) {
+    echo "Unable to submit job, user is not logged in. \n";
+    return false;
+  }
+
+  //$filename = basename( $_FILES[$name]['name']);
+  $user_next_message_id = FindNextID($conn,$username);
+  echo $filename . " and next message ID " . $user_next_message_id . "! \n";
   // rename audio file to username.ID#.filename.wav
   // Move to data_dir/audio
 //shell_exec('mv $upload_dir/' . $filename);
@@ -206,9 +270,44 @@ function processJson($json_data) {
 
     return $success;
   }
-  echo "$json_data[type]";
+  echo "$json_data[type] \n";
   echo " but nothing process!\n";
   return false;
-}  
+}
+
+function processRequest($request_data) {
+  if( $request_data === null ) {
+    echo "parameter is null.\n";
+    return false;
+  }
+  //echo "Printing out data... \n";
+  //print_r($request_data);
+  $success = null;
+
+  switch($request_data[apicall]) {
+    case 'signup':
+      $success = CreateAcc($request_data[username],$request_data[password]);
+      return $success;
+      break;
+    case 'login':
+      $success = Login($request_data[username],$request_data[password]);
+      return $success;
+      break;
+    case 'logout':
+      $success = Logout($request_data[username]);
+      return $success;
+      break;
+    case 'jobsubmit':
+      $success = JobSubmission($request_data[username], $request_data[filename]);
+      return $success;
+      break;
+  }
+
+  echo $request_data[type] . " \n";
+  echo " but nothing process! \n";
+  return false;
+}
 
 ?>
+
+ 
