@@ -1,0 +1,1 @@
+To see .eml file open it with a text editor like Atom, TextWrangler etc.
