@@ -3,8 +3,8 @@ include_once './UsersMethods.php';
 include_once './MessagesMethods.php';
 
 /* some global variable */
-$upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
-$data_dir = '/home/yizongk/CUNYCodes/';
+$upload_dir = '/home/ubuntu/PHPScripts/filesuploads/';
+$data_dir = '/home/ubuntu/';
 
 /* BEFORE DOING ANY OF THE FOLLOWING FCT, NOTE TO SELF, HAVE A CHECK THAT THEY ARE CURRENTLY ONLINE, BEFORE EACH FCT, MUST CHECK THAT THEY ARE ONLINE (that they are logged in).
 // IT IS ASSUMED THAT MASTER SCRIPT WILL MAKE SURE BEFORE CALLING ANY OF FOLLOWING FCT THAT USER IS ONLINE (that they are logged in).

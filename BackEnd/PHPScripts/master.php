@@ -14,7 +14,7 @@ include_once './MasterMethods.php';
 set_time_limit(0);
 
 /* some global variable */
-$error_msg_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/msg.txt';
+//$error_msg_dir = '/home/ubuntu/working_space/error.txt';
 $arr;
 
 ob_start();
