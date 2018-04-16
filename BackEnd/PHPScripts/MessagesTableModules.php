@@ -1,5 +1,16 @@
 <?php
 
+// Returns the number of entries a User has in the Message table.
+function GetNumberOfMessageEntries( $conn, $user_id ) {
+  $sql = "SELECT * FROM Messages WHERE User_ID  = '$user_id' ";
+  $result = mysqli_query( $conn, $sql );
+  
+  if( $result === false )
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+  
+  return mysqli_num_rows( $result );
+}
+
 // Access specific data, return falseL if nothing found.
 function AccessMessages( $conn, $member, $member_key, $target_member ) {
   $sql = "SELECT * FROM Messages WHERE $member = '$member_key' ";

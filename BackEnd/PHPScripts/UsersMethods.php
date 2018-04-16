@@ -13,7 +13,7 @@ function CreateAccount( $conn, $username, $password ) {
   }
 
   //Insert into MySQL
-  if( InsertIntoUser( $conn, $username, $password ) ) {
+  if( InsertIntoUser( $conn, $username, $password, $phone_number, $first_name, $last_name ) ) {
     echo "New User created successfully \n";
     return true;
   }
@@ -86,6 +86,22 @@ function ChangePassword( $conn, $username, $password, $new_password ) {
   }
   echo "Bad Login. \n";
   return false;
+}
+
+function FindUserID( $conn, $username ) {
+  return AccessUser( $conn, 'User_Name', $username, 'User_ID' );
+}
+
+function IsLogin( $conn, $username ) {
+  $islogin = AccessUser( $conn, 'User_Name', $username, 'Online_Status' );
+
+  if( $islogin === 1 or $islogin === null ) {
+    echo "$username is NOT logged in. \n";
+    return false;
+  } else {
+    echo "$username is logged in. \n";
+    return true;
+  }
 }
 
 ?>

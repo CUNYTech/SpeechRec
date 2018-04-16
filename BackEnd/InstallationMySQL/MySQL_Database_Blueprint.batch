@@ -5,6 +5,9 @@ CREATE TABLE Users (
 			   User_Name  	   VARCHAR(20) UNIQUE,
 			   Password	   VARCHAR(20),
 			   Online_Status   BOOL,
+			   Phone_Number    VARCHAR(20),
+			   First_Name 	   VARCHAR(20),
+			   Last_Name	   VARCHAR(20),
 
 			   CONSTRAINT UC_User UNIQUE (User_ID,User_Name),
                            PRIMARY KEY (User_ID)
