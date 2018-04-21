@@ -14,7 +14,7 @@ include_once './MasterMethods.php';
 set_time_limit(0);
 
 /* some global variable */
-//$error_msg_dir = '/home/ubuntu/working_space/error.txt';
+$error_msg_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/msg.txt';
 $arr;
 
 ob_start();
@@ -22,18 +22,7 @@ echo "Hello! This is the beginning of the php script! <br>\n";
 echo "Today is " . date("m/d/y") . " <br>\n";
 echo "The time is " . date("h:i:sa") . " <br>\n";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-  $json_data = recieveIncomingJson();
-  if($json_data != null) {
-    if( processJson($json_data) === true ) {
-      echo $json_data[type] . " is a Success! \n";
-      $arr->success = true;
-    } else {
-      echo $json_data[type] . " Failed! \n";
-      $arr->success = false;
-    }
-
-
-  }else if(isset($_GET['apicall'])) {
+  if(isset($_GET['apicall'])) {
     echo "This is a api call\n";
     $incoming_request_data = recieveIncomingRequest();
     if( processRequest($incoming_request_data) === true ) {

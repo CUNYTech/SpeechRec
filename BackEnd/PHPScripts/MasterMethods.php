@@ -1,10 +1,12 @@
 <?php
 include_once './UsersMethods.php';
 include_once './MessagesMethods.php';
+include_once './AWSPrepFunctions.php';
 
 /* some global variable */
-$upload_dir = '/home/ubuntu/PHPScripts/filesuploads/';
-$data_dir = '/home/ubuntu/';
+//$upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
+$working_dir = '/home/ubuntu/working_dir/';
+$data_dir = '/home/ubuntu/data_dir/';
 
 /* BEFORE DOING ANY OF THE FOLLOWING FCT, NOTE TO SELF, HAVE A CHECK THAT THEY ARE CURRENTLY ONLINE, BEFORE EACH FCT, MUST CHECK THAT THEY ARE ONLINE (that they are logged in).
 // IT IS ASSUMED THAT MASTER SCRIPT WILL MAKE SURE BEFORE CALLING ANY OF FOLLOWING FCT THAT USER IS ONLINE (that they are logged in).
@@ -15,60 +17,8 @@ $data_dir = '/home/ubuntu/';
 /* CORE FUNCTIONS 
 // $name will be decided what type of incoming request type. 'binaryfile' is for audio upload, 'login' will be for login with it's own logic.
 */
-/*
-function retrieveUpload( $name ) {
-  if ( isset($_FILES[$name]) ) {
-      return true;
-  }else
-  echo "nothing is set!<br>\n";
-  
-  // Checks if files is uploaded.
-  if( !is_uploaded_file( $_FILES[$name]['tmp_name'] ) ) {
-    echo "File not uploaded<br>\n";
-    echo "Here is some more debugging info: <br>\n";
-    print_r($_FILES);
-    if( $_FILES[$name]['error'] == '1' )
-      echo "The uploaded file exceeds the upload_max_filesize directive in php.ini. <br>\n";
-    if( $_FILES[$name]['error'] == '2' )
-      echo "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.<br>\n";
-    if( $_FILES[$name]['error'] == '3' )
-       echo "The uploaded file was only partially uploaded.<br>\n";
-    if( $_FILES[$name]['error'] == '4' )
-      echo "No file was uploaded.<br>\n";
-    if( $_FILES[$name]['error'] == '5' )
-      echo "No entry on this error 5 on php.net/manual<br>\n";
-    if( $_FILES[$name]['error'] == '6' )
-      echo "Missing a temporary folder.<br>\n";
-    if( $_FILES[$name]['error'] == '7' )
-      echo "Failed to write file to disk.<br>\n";
-    if( $_FILES[$name]['error'] == '8' )
-      echo "A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help.<br>\n";
-    return false;
-  }
-  
-  $uploaded_file_dir = $upload_dir . basename( $_FILES[$name]['name'] );
-  
-  echo "<pre>\n";
-   if( move_uploaded_file( $_FILES[$name]['tmp_name'], $uploaded_file_dir ) ) {
-    echo "File is valid, and was successfully uploaded.<br>\n";
-  }
-  else {
-    echo "Possible file upload attack!<br>\n";
-    echo "Here is some more debugging info: <br>\n";
-    print_r($_FILES);
-  }
-  echo "</pre>\n";
- 
-  return true;
-}
-*/  
 
-function recieveIncomingJson() {
-  $json_data = json_decode( file_get_contents('php://input'), true );
-  //print_r($json_data);
-  return $json_data;
-}
-
+// CREATE A CLASS TO STORE INCOMING POST DATA IN!
 function recieveIncomingRequest() {
   $request_data = null;
 
@@ -115,9 +65,19 @@ function recieveIncomingRequest() {
       $request_data = array(
         'apicall'=>'jobsubmit',
         'username' => $_POST['username'],
-        'filename' => $_POST['filename']
+        'filename' => $_POST['filename'],
+        'emlfile' => $_POST['emlfile']
       );
       echo "Job Submit Call.\n";
+      break;
+
+      case 'transcriptrequest';
+      $request_data = array(
+        'apicall'=>'transcriptrequest',
+        'username' => $_POST['username'],
+        'filename' => $_POST['filename']
+      );
+      echo "Transcript Request Call.\n";
       break;
 
     }
@@ -164,23 +124,68 @@ function closeDBConnection($conn) {
 }
 
 
-
 /* Normal Methods */
 
-// Assumes that audio file is in working_directory before calling.
-function JobSubmission( $username, $filename ) {
+// Functions for writting to file. param is filename, and data.
+function WriteToFile( $filename, $data, $path ) {
+  $path .= $filename;
+
+  echo 'Current script owner: ' . get_current_user() . " \n";
+  echo 'Current user_id: ' . getmyuid() . 'Current group_id: ' . getmygid() . " \n";
+
+  if( !$myfile = fopen($path, 'w') ) {
+    echo "Cannot open file ($path) \n";
+    return false;
+  }
+
+  if( is_writable($path) ) {
+    
+    if( fwrite($myfile, $data) === false ) {
+      echo "Cannot write to file ($path) \n";
+      return false;
+    }
+
+    echo "Success, wrote ($data) to file ($path)\n";
+    fclose($myfile);
+    return true;
+
+  } else {
+    echo "The file $path is not writable. \n";
+    return false;
+  }
+
+  return false;
+}
+
+// Moves the audio file to working_directory during call.
+function JobSubmission( $username, $filename, $emlfile ) {
   $conn = getDBConnection();
+  Global $working_dir;
+  $user_next_message_id = null;
+  $output_filename = null;
+  $myfile = null;
+  $aws_trans_cml_dir = '/home/ubuntu/AWSCommandLineScripts/';
 
   if( isLogin( $conn, $username ) === false ) {
     echo "Unable to submit job, user is not logged in. \n";
     return false;
   }
 
-  //$filename = basename( $_FILES[$name]['name']);
   $user_next_message_id = FindNextID($conn,$username);
   echo $filename . " and next message ID " . $user_next_message_id . "! \n";
-  // rename audio file to username.ID#.filename.wav
-  // Move to data_dir/audio
+  // rename audio file to ID#.username.filename.wav
+  $output_filename = $user_next_message_id . "." . $username . "." . $filename;
+  //echo "Output filename: " . $output_filename . " \n";
+  // Move incoming audio to working_dir.
+  WriteToFile($output_filename, $emlfile, $working_dir);
+  // Cp incoming audio working_dir to AWS E3 server;
+  shell_exec("sh $aws_trans_cml_dir" . 'StoreToE3.sh ' . "$output_filename");
+  // Create Json file for the incoming audio file to prep for AWS transcription service, also stored in working_dir, same name followed by .json
+  $transcript_json = AWSTranscribeJsonPrep($output_filename, 'wav');
+  $output_json_filename = $output_file . '.json';
+  WriteToFile($output_json_filename, $transcript_json, $working_dir);
+  // Calls AWS transcription service.
+  
 //shell_exec('mv $upload_dir/' . $filename);
   // Create entry in MESSAGES TABLE mysql
   // call transribe program
@@ -248,32 +253,6 @@ function RequestMessageRemoval( $member, $member_key ) {
   return $success;
 }
 
-function processJson($json_data) {
-  $success = null;
-  switch($json_data[type]) {
-    case "CreateAcc":
-      $success = CreateAcc($json_data[username],$json_data[password]);
-      return $success;
-      break;
-    case "Login":
-      $success = Login($json_data[username],$json_data[password]);
-      return $success;
-      break;
-    case "Logout":
-      $success = Logout($json_data[username]);
-      return $success;
-      break;
-    case "JobSubmit":
-      $success = JobSubmission($json_data[username]);
-      return $success;
-      break;
-
-    return $success;
-  }
-  echo "$json_data[type] \n";
-  echo " but nothing process!\n";
-  return false;
-}
 
 function processRequest($request_data) {
   if( $request_data === null ) {
@@ -298,7 +277,7 @@ function processRequest($request_data) {
       return $success;
       break;
     case 'jobsubmit':
-      $success = JobSubmission($request_data[username], $request_data[filename]);
+      $success = JobSubmission($request_data[username], $request_data[filename], $request_data[emlfile]);
       return $success;
       break;
   }
