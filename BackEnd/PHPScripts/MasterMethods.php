@@ -5,7 +5,7 @@ include_once './AWSPrepFunctions.php';
 
 /* some global variable */
 //$upload_dir = '/home/yizongk/CUNYCodes/PHPScripts/filesuploads/';
-$working_dir = '/home/ubuntu/working_dir/';
+$working_dir = '/home/ubuntu/working_space/';
 $data_dir = '/home/ubuntu/data_dir/';
 
 /* BEFORE DOING ANY OF THE FOLLOWING FCT, NOTE TO SELF, HAVE A CHECK THAT THEY ARE CURRENTLY ONLINE, BEFORE EACH FCT, MUST CHECK THAT THEY ARE ONLINE (that they are logged in).
