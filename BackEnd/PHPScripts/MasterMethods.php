@@ -186,7 +186,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   // Create Json file for the incoming audio file to prep for AWS transcription service, also stored in working_dir, same name followed by .json
   $transcript_json = AWSTranscribeJsonPrep($output_filename, 'wav');
   $output_json_filename = $output_filename . '.json';
-  WriteToFile($output_json_filename, $transcript_json, $working_dir);
+  ////////WriteToFile($output_json_filename, $transcript_json, $working_dir);
   // Calls AWS transcription service.
   
 //shell_exec('mv $upload_dir/' . $filename);
