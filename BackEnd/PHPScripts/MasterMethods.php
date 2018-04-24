@@ -135,7 +135,10 @@ function WriteToFile( $filename, $data, $path ) {
 
   if (!file_exists($path)) {
     echo "File not found, it doesn't exist! \n";
+  } else {
+    echo "File already exist, overwritting it. \n";
   }
+
   if( !$myfile = fopen($path, 'w') ) {
     echo "Cannot open file ($path) \n";
     return false;
