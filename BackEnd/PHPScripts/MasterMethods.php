@@ -133,8 +133,8 @@ function WriteToFile( $filename, $data, $path ) {
   echo 'Current script owner: ' . get_current_user() . " \n";
   echo 'Current user_id: ' . getmyuid() . 'Current group_id: ' . getmygid() . " \n";
 
-  if (!file_exists($myFile)) {
-    echo "File not found \n";
+  if (!file_exists($path)) {
+    echo "File not found, it doesn't exist! \n";
   }
   if( !$myfile = fopen($path, 'w') ) {
     echo "Cannot open file ($path) \n";
