@@ -185,7 +185,10 @@ function JobSubmission( $username, $filename, $emlfile ) {
   // Move incoming audio to working_dir.
   WriteToFile($output_filename, $emlfile, $working_dir);
   // Cp incoming audio working_dir to AWS E3 server;
-  echo shell_exec('sh ' . $aws_trans_cml_dir . 'StoreToE3.sh ' . $working_dir . $output_filename);
+  $command = 'sh ' . $aws_trans_cml_dir . 'StoreToE3.sh ' . $working_dir . $output_filename;
+  $command_output = null;
+  echo exec($command, $command_output) . "\n ";
+  echo " CMD OUTPUT " . $command_output . "\n ";
   // Create Json file for the incoming audio file to prep for AWS transcription service, also stored in working_dir, same name followed by .json
   $transcript_json = AWSTranscribeJsonPrep($output_filename, 'wav');
   $output_json_filename = $output_filename . '.json';
