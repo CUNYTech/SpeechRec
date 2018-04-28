@@ -17,9 +17,9 @@ function AWSTranscribeJsonPrep($filename, $mediaformat) {
   $prep = array(
       'TranscriptionJobName'=> $filename,
       'LanguageCode'=> 'en-US',
-      //'MediaFormat'=> $mediaformat,
-      'MediaFormat'=> 'https://s3-us-east-2.amazonaws.com/speechrecaudios/' . $filename,
-      'Media' => $subprepjson
+      'MediaFormat'=> $mediaformat,
+      //'Media' => $subprepjson
+      'Media'=> 'https://s3-us-east-2.amazonaws.com/speechrecaudios/' . $filename,
   );
 
   $prepjson = json_encode($prep);
