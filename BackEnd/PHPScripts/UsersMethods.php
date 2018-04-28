@@ -96,10 +96,10 @@ function IsLogin( $conn, $username ) {
   $islogin = AccessUser( $conn, 'User_Name', $username, 'Online_Status' );
 
   if( $islogin === 1 or $islogin === null ) {
-    echo "$username is NOT logged in. \n";
+    //echo "$username is NOT logged in. \n";
     return false;
   } else {
-    echo "$username is logged in. \n";
+    //echo "$username is logged in. \n";
     return true;
   }
 }
