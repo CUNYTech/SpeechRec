@@ -191,6 +191,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   $output_json_filename = $output_filename . '.json';
   WriteToFile($output_json_filename, $transcript_json, $working_dir);
   // Calls AWS transcription service.
+  //shell_exec();
   
 //shell_exec('mv $upload_dir/' . $filename);
   // Create entry in MESSAGES TABLE mysql
