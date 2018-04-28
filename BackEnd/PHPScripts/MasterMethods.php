@@ -170,7 +170,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   $user_next_message_id = null;
   $output_filename = null;
   $myfile = null;
-  $aws_trans_cml_dir = '/home/ubuntu/AWSCommandLineScripts/';
+  $aws_trans_cml_dir = '/var/www/html/';
 
   if( isLogin( $conn, $username ) === false ) {
     echo "Unable to submit job, user is not logged in. \n";
