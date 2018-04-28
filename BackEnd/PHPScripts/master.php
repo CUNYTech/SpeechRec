@@ -27,19 +27,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $incoming_request_data = recieveIncomingRequest();
     if( processRequest($incoming_request_data) === true ) {
       // success
+      $arr->response = 'true';
       echo "\n Incoming request prcoessed and finished successfully. \n";
     } else {
       // failed
+      $arr->response = 'false';
       echo "\n Incoming request processed but did NOT finished successfully. \n";
     }
     
   } else {
+    $arr->response = 'false';
     echo "POST request not recognized! \n";
   }
 
 } else {
   echo "Request type is not POST!";
-  $arr->success = false;
+  $arr->response = 'false';
 }
 
 echo "\n--------------------------\n";
