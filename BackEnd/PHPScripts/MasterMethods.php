@@ -170,7 +170,6 @@ function JobSubmission( $username, $filename, $emlfile ) {
   $user_next_message_id = null;
   $output_filename = null;
   $myfile = null;
-  $aws_trans_cml_dir = '/var/www/html/';
 
   if( isLogin( $conn, $username ) === false ) {
     echo "Unable to submit job, user is not logged in. \n";
@@ -184,18 +183,12 @@ function JobSubmission( $username, $filename, $emlfile ) {
   //echo "Output filename: " . $output_filename . " \n";
   // Move incoming audio to working_dir.
   WriteToFile($output_filename, $emlfile, $working_dir);
-  // Cp incoming audio working_dir to AWS E3 server;
-  //$command = 'sh ' . $aws_trans_cml_dir . 'StoreToE3.sh ' . $working_dir . $output_filename;
-  //$command_output = null;
+  $command = 'pocketsphinx_continuous -infile ' . $working_dir . $output_filename;
+  $command_output = null;
+  echo $command;
   //echo exec($command, $command_output) . "---";
-  //echo " CMD OUTPUT---";
   //print_r($command_output);
-  // Create Json file for the incoming audio file to prep for AWS transcription service, also stored in working_dir, same name followed by .json
-  //$transcript_json = AWSTranscribeJsonPrep($output_filename, 'wav');
-  //$output_json_filename = $output_filename . '.json';
-  //WriteToFile($output_json_filename, $transcript_json, $working_dir);
-  // Calls AWS transcription service.
-  //shell_exec();
+  
   
 //shell_exec('mv $upload_dir/' . $filename);
   // Create entry in MESSAGES TABLE mysql
