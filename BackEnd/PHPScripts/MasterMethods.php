@@ -40,7 +40,7 @@ function recieveIncomingRequest() {
           'gender' => $_POST['gender'],
           'filename' => $_POST['filename']
         );
-        echo "Sign Up Call.\n";
+        //echo "Sign Up Call.\n";
       //}
       break;
 
@@ -50,7 +50,7 @@ function recieveIncomingRequest() {
         'username' => $_POST['username'],
         'password' => $_POST['password']
       );
-      echo "Login Call\n";
+      //echo "Login Call\n";
       break;
 
       case 'logout':
@@ -58,7 +58,7 @@ function recieveIncomingRequest() {
           'apicall'=>'logout',
           'username' => $_POST['username']
       );
-      echo "Logout Call\n";
+      //echo "Logout Call\n";
       break;
 
       case 'jobsubmit';
@@ -68,7 +68,7 @@ function recieveIncomingRequest() {
         'filename' => $_POST['filename'],
         'emlfile' => $_POST['emlfile']
       );
-      echo "Job Submit Call.\n";
+      //echo "Job Submit Call.\n";
       break;
 
       case 'transcriptrequest';
@@ -77,7 +77,7 @@ function recieveIncomingRequest() {
         'username' => $_POST['username'],
         'filename' => $_POST['filename']
       );
-      echo "Transcript Request Call.\n";
+      //echo "Transcript Request Call.\n";
       break;
 
     }
@@ -130,8 +130,8 @@ function closeDBConnection($conn) {
 function WriteToFile( $filename, $data, $path ) {
   $path .= $filename;
 
-  echo 'Current script owner: ' . get_current_user() . " \n";
-  echo 'Current user_id: ' . getmyuid() . 'Current group_id: ' . getmygid() . " \n";
+  //echo 'Current script owner: ' . get_current_user() . " \n";
+  //echo 'Current user_id: ' . getmyuid() . 'Current group_id: ' . getmygid() . " \n";
 
   if (!file_exists($path)) {
     echo "File not found, it doesn't exist! \n";
@@ -178,7 +178,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   }
 
   $user_next_message_id = FindNextID($conn,$username);
-  echo $filename . " and next message ID " . $user_next_message_id . "! \n";
+  //echo $filename . " and next message ID " . $user_next_message_id . "! \n";
   // rename audio file to ID#.username.filename.wav
   $output_filename = $user_next_message_id . "." . $username . "." . $filename;
   //echo "Output filename: " . $output_filename . " \n";
@@ -188,7 +188,8 @@ function JobSubmission( $username, $filename, $emlfile ) {
   $command = 'sh ' . $aws_trans_cml_dir . 'StoreToE3.sh ' . $working_dir . $output_filename;
   $command_output = null;
   echo exec($command, $command_output) . "\n ";
-  echo " CMD OUTPUT " . $command_output . "\n ";
+  echo " CMD OUTPUT \n ";
+  print_r($command_output);
   // Create Json file for the incoming audio file to prep for AWS transcription service, also stored in working_dir, same name followed by .json
   $transcript_json = AWSTranscribeJsonPrep($output_filename, 'wav');
   $output_json_filename = $output_filename . '.json';
