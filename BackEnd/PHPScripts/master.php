@@ -50,7 +50,7 @@ echo "\n--------------------------\n";
 $arr->server_msg = ob_get_contents();
 ob_end_clean();
 
-$myjson = json_encode($arr);
+$myjson = json_encode($arr, JSON_PRETTY_PRINT);
 echo $myjson;
 
 ?>
