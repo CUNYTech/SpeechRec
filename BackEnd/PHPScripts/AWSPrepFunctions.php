@@ -12,7 +12,7 @@ function AWSTranscribeJsonPrep($filename, $mediaformat) {
     'MediaFileUri'=> $e3mediaurl
   );
 
-  $subprepjson = json_encode($subprep,JSON_UNESCAPED_UNICODE);
+  $subprepjson = json_encode($subprep,JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT);
 
   $prep = array(
       'TranscriptionJobName'=> $filename,
@@ -22,7 +22,7 @@ function AWSTranscribeJsonPrep($filename, $mediaformat) {
       //'Media'=> 'https://s3-us-east-2.amazonaws.com/speechrecaudios/' . $filename,
   );
 
-  $prepjson = json_encode($prep, JSON_UNESCAPED_UNICODE);
+  $prepjson = json_encode($prep, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT);
 
   return $prepjson;
 }
