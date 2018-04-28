@@ -11,11 +11,11 @@ function AccessUser( $conn, $member, $member_key, $target_member ) {
   
   if( mysqli_num_rows( $result ) > 0 ) {
     $row = mysqli_fetch_assoc( $result );
-    echo "User $member Accessed. \n";
+    //echo "User $member Accessed. \n";
     return $row[$target_member];
   }
   else {
-    echo "User Not Accessed. \n";
+    //echo "User Not Accessed. \n";
     return false; 
   }   
 }
@@ -31,11 +31,11 @@ function FindDataUser( $conn, $member, $member_key ) {
   }
 
   if( mysqli_num_rows( $result ) > 0 ) {
-    echo "Found Data in User Table. \n";
+    //echo "Found Data in User Table. \n";
     return true;
   }
   else {
-    echo "Did NOT find Data in User Table. \n";
+    //echo "Did NOT find Data in User Table. \n";
     return false;    
   }
 }
@@ -46,7 +46,7 @@ function InsertIntoUser( $conn, $username, $password, $phone_number, $first_name
   $sql = "INSERT INTO Users (User_Name, Password, Phone_Number, First_Name, Last_Name) VALUES ('$username', '$password', '$phone_number', '$first_name', '$last_name')";
 
   if( mysqli_query( $conn, $sql ) ) { 
-    echo "Insert into User Successfully. \n";
+    //echo "Insert into User Successfully. \n";
     return true;
   }
   else {
@@ -60,7 +60,7 @@ function ModifyUser( $conn, $member, $member_key, $target_member, $target_member
   $sql = "UPDATE Users SET $target_member = '$target_member_update' WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
-    echo "User Modified Successfully. \n";
+    //echo "User Modified Successfully. \n";
     return true;
   }
   else {
@@ -74,7 +74,7 @@ function RemoveUser( $conn, $member, $member_key ) {
   $sql = "DELETE FROM Users WHERE $member = '$member_key'";
 
   if( mysqli_query( $conn, $sql ) ) {
-    echo "User Removed Successfully. \n";
+    //echo "User Removed Successfully. \n";
     return true;
   }
   else {

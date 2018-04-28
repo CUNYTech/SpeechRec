@@ -134,29 +134,29 @@ function WriteToFile( $filename, $data, $path ) {
   //echo 'Current user_id: ' . getmyuid() . 'Current group_id: ' . getmygid() . " \n";
 
   if (!file_exists($path)) {
-    echo "File not found, it doesn't exist! \n";
+    //echo "File not found, it doesn't exist! \n";
   } else {
-    echo "File already exist, overwritting it. \n";
+    //echo "File already exist, overwritting it. \n";
   }
 
   if( !$myfile = fopen($path, 'w') ) {
-    echo "Cannot open file ($path) \n";
+    //echo "Cannot open file ($path) \n";
     return false;
   }
 
   if( is_writable($path) ) {
     
     if( fwrite($myfile, $data) === false ) {
-      echo "Cannot write to file ($path) \n";
+      //echo "Cannot write to file ($path) \n";
       return false;
     }
 
-    echo "Success, wrote ($data) to file ($path)\n";
+    //echo "Success, wrote ($data) to file ($path)\n";
     fclose($myfile);
     return true;
 
   } else {
-    echo "The file $path is not writable. \n";
+    //echo "The file $path is not writable. \n";
     return false;
   }
 
