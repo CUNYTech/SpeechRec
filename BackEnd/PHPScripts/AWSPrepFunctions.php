@@ -1,7 +1,7 @@
 <?php
 
 $bucketname = 'speechrecaudios';
-$e3endpoint = 'https://s3-us-east.amazonaws.com/' . $bucketname;
+$e3endpoint = 'https://s3-us-east.amazonaws.com/' . $bucketname . '/';
 
 // Returns a Json object that is used for AWS transcription call.
 function AWSTranscribeJsonPrep($filename, $mediaformat) {
