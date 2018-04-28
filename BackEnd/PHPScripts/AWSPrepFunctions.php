@@ -25,8 +25,8 @@ function AWSTranscribeJsonPrep($filename, $mediaformat) {
 
   $prepjson = json_encode($prep, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT);
 
-  //return $prepjson;
-  return $subprepjson;
+  return $prepjson;
+  //return $subprepjson;
 }
 
 
