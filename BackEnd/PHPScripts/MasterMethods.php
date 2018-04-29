@@ -171,6 +171,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   $user_next_message_id = null;
   $output_filename = null;
   $myfile = null;
+  $summarizer_path = '/home/ubuntu/InstallationSummary/';
 
   if( isLogin( $conn, $username ) === false ) {
     echo "Unable to submit job, user is not logged in. \n";
@@ -192,7 +193,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   exec($command, $command_output);
   //print_r($command_output);
 
-  $command1 = 'python3.5 ./summary.py ' . $data_dir . $user_next_message_id . '.txt > ' . $data_dir . $user_next_message_id . '.sum.txt';
+  $command1 = 'python3.5 ' . $summarizer_path . 'summary.py ' . $data_dir . $user_next_message_id . '.txt > ' . $data_dir . $user_next_message_id . '.sum.txt';
   $command_output1 = null;
   exec($command1, $command_output1);
   
