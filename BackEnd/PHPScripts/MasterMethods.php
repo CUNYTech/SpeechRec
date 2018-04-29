@@ -163,6 +163,13 @@ function WriteToFile( $filename, $data, $path ) {
   return false;
 }
 
+function GetStringFromFile( $file_path ) {
+  $handle = fopen($filepath,'r');
+  $contents = fread($handle, filesize($file_path));
+  fclose($handle);
+  return $contents;
+}
+
 // Moves the audio file to working_directory during call.
 function JobSubmission( $username, $filename, $emlfile, &$arr ) {
   $conn = getDBConnection();
@@ -200,7 +207,7 @@ function JobSubmission( $username, $filename, $emlfile, &$arr ) {
   $command_output1 = null;
   exec($command1, $command_output1);
 
-  $arr->summary = $command_output1;
+  $arr->summary = GetStringFromFile( $summary_path );
   
   // Create entry in MESSAGES TABLE mysql
   CreateMessageEntry( $conn, $username, $audio_path, $transcribe_path, $summary_path );
