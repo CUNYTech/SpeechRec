@@ -167,6 +167,7 @@ function WriteToFile( $filename, $data, $path ) {
 function JobSubmission( $username, $filename, $emlfile ) {
   $conn = getDBConnection();
   Global $working_dir;
+  Global $data_dir;
   $user_next_message_id = null;
   $output_filename = null;
   $myfile = null;
@@ -183,7 +184,8 @@ function JobSubmission( $username, $filename, $emlfile ) {
   //echo "Output filename: " . $output_filename . " \n";
   // Move incoming audio to working_dir.
   WriteToFile($output_filename, $emlfile, $working_dir);
-  $command = 'pocketsphinx_continuous -infile ' . $working_dir . $output_filename;
+  // For now only story in /data/... no sub folder.
+  $command = 'pocketsphinx_continuous -infile ' . $data_dir . $output_filename . ' > ' . $data_dir . $output_filename . '.txt';
   $command_output = null;
   echo $command;
   //echo exec($command, $command_output) . "---";
