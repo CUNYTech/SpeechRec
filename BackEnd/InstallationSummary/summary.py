@@ -101,7 +101,7 @@ def words(text):
     #print(verbs_l)
     if 'please' in verbs_l:
         next_word = verbs_l[verbs_l.index('please') + 1]
-        print("\nPlease"+' '+next_word , end='')
+        print("Please" + ' ' + next_word + '\n', end='')
         if next_word=='call':
             print(' regarding ',end='')
             
@@ -116,7 +116,7 @@ def words(text):
                             #if (word!='number'):
                    print (word, end=' ')
     else:
-          print('\nPlease  ',end='')
+          print('Please \n ',end='')
           for verb in verbs_l:
               print(verb, end=' ')
           for word,tag in blob.tags:
