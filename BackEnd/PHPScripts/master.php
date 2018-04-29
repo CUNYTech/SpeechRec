@@ -23,7 +23,7 @@ echo "Today is " . date("m/d/y") . " <br>\n";
 echo "The time is " . date("h:i:sa") . " <br>\n";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   if(isset($_GET['apicall'])) {
-    echo "This is a api call\n";
+    //echo "This is a api call\n";
     $incoming_request_data = recieveIncomingRequest();
     if( processRequest($incoming_request_data) === true ) {
       // success
