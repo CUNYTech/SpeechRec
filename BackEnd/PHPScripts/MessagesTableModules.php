@@ -44,7 +44,7 @@ function AccessMessages( $conn, $member, $member_key, $target_member ) {
 // Accessing Lastest entry's member.
 function GetLatestMessageFromWholeMessageTable( $conn, $target_member ) {
   $latest_msg_id = GetNumberOfMessageEntriesTotal( $conn );
-  return AccessMessages( $conn, 'Message_ID', $latest_msg_id, $target_member )
+  return AccessMessages( $conn, 'Message_ID', $latest_msg_id, $target_member );
 }
 
 // Generic Search Messages Data existence 
