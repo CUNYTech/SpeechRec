@@ -183,7 +183,8 @@ function JobSubmission( $username, $filename, $emlfile ) {
   $output_filename = $user_next_message_id . "." . $username . "." . $filename;
   //echo "Output filename: " . $output_filename . " \n";
   // Move incoming audio to working_dir.
-  WriteToFile($output_filename, $emlfile, $working_dir);
+  //WriteToFile($output_filename, $emlfile, $working_dir);
+  // Assumesit's sended audio
   // For now only story in /data/... no sub folder.
   $command = 'pocketsphinx_continuous -infile ' . $data_dir . $output_filename . ' > ' . $data_dir . $user_next_message_id . '.txt';
   $command_output = null;
