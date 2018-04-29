@@ -67,7 +67,7 @@ function FindDataMessages( $conn, $member, $member_key ) {
 
 // Create whole Message Entry
 function CreateMessage( $conn, $user_id, $audio_path, $transcribe_path, $summary_path ) {
-  $sql = "INSERT INTO Messages (User_ID, Audio_Path, Text_Path, Summarized_Text_Path) VALUES ('$id', '$audio_path', '$transcribe_path, $summary_path')";
+  $sql = "INSERT INTO Messages (User_ID, Audio_Path, Text_Path, Summarized_Text_Path) VALUES ('$user_id', '$audio_path', '$transcribe_path, $summary_path')";
 
   if( mysqli_query( $conn, $sql ) ) {
     echo "Insert Complete. \n";
