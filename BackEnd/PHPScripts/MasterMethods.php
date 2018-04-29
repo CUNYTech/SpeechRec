@@ -164,7 +164,7 @@ function WriteToFile( $filename, $data, $path ) {
 }
 
 function GetStringFromFile( $file_path ) {
-  $handle = fopen($filepath,'r');
+  $handle = fopen($file_path,'r');
   $contents = fread($handle, filesize($file_path));
   fclose($handle);
   return $contents;
