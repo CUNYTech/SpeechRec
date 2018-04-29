@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   if(isset($_GET['apicall'])) {
     //echo "This is a api call\n";
     $incoming_request_data = recieveIncomingRequest();
-    if( processRequest($incoming_request_data) === true ) {
+    if( processRequest($incoming_request_data, $arr) === true ) {
       // success
       $arr->response = 'true';
       echo "\n Incoming request prcoessed and finished successfully. \n";

@@ -1,8 +1,19 @@
 <?php
 
 // Returns the number of entries a User has in the Message table.
-function GetNumberOfMessageEntries( $conn, $user_id ) {
+function GetNumberOfMessageEntriesForUser( $conn, $user_id ) {
   $sql = "SELECT * FROM Messages WHERE User_ID  = '$user_id' ";
+  $result = mysqli_query( $conn, $sql );
+  
+  if( $result === false )
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+  
+  return mysqli_num_rows( $result );
+}
+
+// Returns the number of entries in the Message table.
+function GetNumberOfMessageEntriesTotal( $conn ) {
+  $sql = "SELECT * FROM Messages";
   $result = mysqli_query( $conn, $sql );
   
   if( $result === false )
@@ -30,6 +41,12 @@ function AccessMessages( $conn, $member, $member_key, $target_member ) {
   }   
 }
 
+// Accessing Lastest entry's member.
+function GetLatestMessageFromWholeMessageTable( $conn, $target_member ) {
+  $latest_msg_id = GetNumberOfMessageEntriesTotal( $conn );
+  return AccessMessages( $conn, 'Message_ID', $latest_msg_id, $target_member )
+}
+
 // Generic Search Messages Data existence 
 function FindDataMessages( $conn, $member, $member_key ) {
   $sql = "SELECT * FROM Messages WHERE $member = '$member_key' ";
@@ -46,6 +63,20 @@ function FindDataMessages( $conn, $member, $member_key ) {
     echo "Message Not Found. \n";
     return false;  
   }  
+}
+
+// Create whole Message Entry
+function CreateMessage( $conn, $user_id, $audio_path, $transcribe_path, $summary_path ) {
+  $sql = "INSERT INTO Messages (User_ID, Audio_Path, Text_Path, Summarized_Text_Path) VALUES ('$id', '$audio_path', '$transcribe_path, $summary_path')";
+
+  if( mysqli_query( $conn, $sql ) ) {
+    echo "Insert Complete. \n";
+    return true;
+  }
+  else {
+    echo "Error: <" . $sql . "> | " . mysqli_error( $conn ) . "\n";
+    return false;
+  }
 }
 
 // Injection into mysql Messages

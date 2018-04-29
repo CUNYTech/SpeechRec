@@ -164,21 +164,21 @@ function WriteToFile( $filename, $data, $path ) {
 }
 
 // Moves the audio file to working_directory during call.
-function JobSubmission( $username, $filename, $emlfile ) {
+function JobSubmission( $username, $filename, $emlfile, &$arr ) {
   $conn = getDBConnection();
   Global $working_dir;
   Global $data_dir;
   $user_next_message_id = null;
   $output_filename = null;
   $myfile = null;
-  $summarizer_path = '/home/ubuntu/InstallationSummary/';
+  $summarizer_path = '/home/ubuntu/InstallationSummary/summary.py';
 
   if( isLogin( $conn, $username ) === false ) {
     echo "Unable to submit job, user is not logged in. \n";
     return false;
   }
 
-  $user_next_message_id = FindNextID($conn,$username);
+  $user_next_message_id = FindNextMessageID($conn,$username);
   //echo $filename . " and next message ID " . $user_next_message_id . "! \n";
   // rename audio file to ID#.username.filename.wav
   $output_filename = $user_next_message_id . "." . $username . "." . $filename;
@@ -187,19 +187,24 @@ function JobSubmission( $username, $filename, $emlfile ) {
   //WriteToFile($output_filename, $emlfile, $working_dir);
   // Assumesit's sended audio
   // For now only story in /data/... no sub folder.
-  $command = 'pocketsphinx_continuous -infile ' . $working_dir . $output_filename . ' > ' . $data_dir . $user_next_message_id . '.txt';
+  $audio_path = $working_dir . $output_filename;
+  $transcribe_path = $data_dir . $user_next_message_id . '.txt'; 
+  $summary_path =$data_dir . $user_next_message_id . '.sum.txt';
+  $command = 'pocketsphinx_continuous -infile ' . $audio_path . ' > ' . $transcribe_path;
   $command_output = null;
   //echo $command;
   exec($command, $command_output);
   //print_r($command_output);
 
-  $command1 = 'python3.5 ' . $summarizer_path . 'summary.py ' . $data_dir . $user_next_message_id . '.txt > ' . $data_dir . $user_next_message_id . '.sum.txt';
+  $command1 = 'python3.5 ' . $summarizer_path . ' ' . $transcribe_path . ' > ' . $summary_path;
   $command_output1 = null;
   exec($command1, $command_output1);
+
+  $arr->summary = $command_output1;
   
-  
-//shell_exec('mv $upload_dir/' . $filename);
   // Create entry in MESSAGES TABLE mysql
+  CreateMessageEntry( $conn, $username, $audio_path, $transcribe_path, $summary_path );
+  
   // call transribe program
   // direct output of that program to /data_dir/fulltext/ID#.txt
   // update transcribe status on message in mysql to done
@@ -258,7 +263,7 @@ function RequestSumTextPath( $member_key ) {
   return $success;
 }
 
-function RequestMessageRemoval( $member, $member_key ) {
+function RequestMessageRemovJobSubal( $member, $member_key ) {
   $conn = getDBConnection();
   $success = RemoveMessage( $conn, $member, $member_key );
   closeDBConnection($conn);
@@ -266,7 +271,7 @@ function RequestMessageRemoval( $member, $member_key ) {
 }
 
 
-function processRequest($request_data) {
+function processRequest($request_data, &$arr) {
   if( $request_data === null ) {
     echo "parameter is null.\n";
     return false;
@@ -289,7 +294,7 @@ function processRequest($request_data) {
       return $success;
       break;
     case 'jobsubmit':
-      $success = JobSubmission($request_data[username], $request_data[filename], $request_data[emlfile]);
+      $success = JobSubmission($request_data[username], $request_data[filename], $request_data[emlfile], $arr);
       return $success;
       break;
   }
