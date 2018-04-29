@@ -186,11 +186,15 @@ function JobSubmission( $username, $filename, $emlfile ) {
   //WriteToFile($output_filename, $emlfile, $working_dir);
   // Assumesit's sended audio
   // For now only story in /data/... no sub folder.
-  $command = 'pocketsphinx_continuous -infile ' . $data_dir . $output_filename . ' > ' . $data_dir . $user_next_message_id . '.txt';
+  $command = 'pocketsphinx_continuous -infile ' . $working_dir . $output_filename . ' > ' . $data_dir . $user_next_message_id . '.txt';
   $command_output = null;
   //echo $command;
-  echo exec($command, $command_output) . "---";
+  exec($command, $command_output);
   //print_r($command_output);
+
+  $command1 = 'python3.5 ./summary.py ' . $data_dir . $user_next_message_id . '.txt > ' . $data_dir . $user_next_message_id . '.sum.txt';
+  $command_output1 = null;
+  exec($command1, $command_output1);
   
   
 //shell_exec('mv $upload_dir/' . $filename);
