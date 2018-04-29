@@ -185,7 +185,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
   // Move incoming audio to working_dir.
   WriteToFile($output_filename, $emlfile, $working_dir);
   // For now only story in /data/... no sub folder.
-  $command = 'pocketsphinx_continuous -infile ' . $data_dir . $output_filename . ' > ' . $data_dir . $output_filename . '.txt';
+  $command = 'pocketsphinx_continuous -infile ' . $data_dir . $output_filename . ' > ' . $data_dir . $user_next_message_id . '.txt';
   $command_output = null;
   echo $command;
   //echo exec($command, $command_output) . "---";
@@ -195,7 +195,7 @@ function JobSubmission( $username, $filename, $emlfile ) {
 //shell_exec('mv $upload_dir/' . $filename);
   // Create entry in MESSAGES TABLE mysql
   // call transribe program
-  // direct output of that program to /data_dir/fulltext/username.ID#.filename.txt
+  // direct output of that program to /data_dir/fulltext/ID#.txt
   // update transcribe status on message in mysql to done
   // update text_path in mysql
   // call summary program
